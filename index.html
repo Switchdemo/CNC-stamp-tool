@@ -33,37 +33,27 @@
     color: var(--text);
     font-family: var(--font-body);
     font-size: 15px;
-    min-height: 100vh;
-    overflow-x: hidden;
-  }
-
-  /* Grain overlay */
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
-    pointer-events: none;
-    z-index: 1000;
-    opacity: 0.5;
+    line-height: 1.5;
   }
 
   header {
     border-bottom: 1px solid var(--border);
-    padding: 0 32px;
+    padding: 0 24px;
     display: flex;
     align-items: center;
-    gap: 24px;
-    height: 64px;
-    background: linear-gradient(to right, var(--surface), var(--bg));
+    gap: 16px;
+    height: 52px;
+    background: var(--surface);
+    position: sticky;
+    top: 0;
+    z-index: 100;
   }
 
   .logo {
     font-family: var(--font-display);
-    font-size: 28px;
+    font-size: 26px;
     letter-spacing: 3px;
     color: var(--amber-bright);
-    text-shadow: 0 0 20px rgba(245,166,35,0.3);
   }
 
   .tagline {
@@ -73,529 +63,304 @@
     letter-spacing: 2px;
     text-transform: uppercase;
     border-left: 1px solid var(--border);
-    padding-left: 24px;
+    padding-left: 16px;
   }
 
-  .status-bar {
+  .header-actions {
     margin-left: auto;
     display: flex;
-    align-items: center;
     gap: 8px;
+    align-items: center;
+  }
+
+  .btn-reset {
+    padding: 6px 14px;
+    background: transparent;
+    border: 1px solid var(--red);
+    color: var(--red);
     font-family: var(--font-mono);
     font-size: 13px;
-    color: var(--text-dim);
+    border-radius: 3px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .btn-reset:hover { background: var(--red); color: #fff; }
+
+  .status-bar {
+    display: flex; align-items: center; gap: 6px;
+    font-family: var(--font-mono); font-size: 13px; color: var(--text-dim);
   }
 
   .status-dot {
-    width: 6px; height: 6px;
-    border-radius: 50%;
-    background: var(--green);
-    box-shadow: 0 0 6px var(--green);
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--green); box-shadow: 0 0 6px var(--green);
     animation: pulse 2s infinite;
   }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
 
-  @keyframes pulse {
-    0%,100% { opacity: 1; }
-    50% { opacity: 0.4; }
+  /* ── Main content: single scrollable column ── */
+  .main {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 20px 24px 60px;
   }
 
-  .app-layout {
-    display: grid;
-    grid-template-columns: 320px 1fr 340px;
-    grid-template-rows: 1fr;
-    height: calc(100vh - 64px);
-  }
-
-  /* LEFT PANEL */
-  .panel-left {
-    border-right: 1px solid var(--border);
-    display: flex;
-    flex-direction: column;
-    overflow-y: auto;
+  /* ── Section cards ── */
+  .card {
     background: var(--surface);
-  }
-
-  .panel-section {
-    border-bottom: 1px solid var(--border);
-    padding: 20px;
-  }
-
-  .section-label {
-    font-family: var(--font-mono);
-    font-size: 12px;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    color: var(--amber);
+    border: 1px solid var(--border);
+    border-radius: 6px;
     margin-bottom: 16px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-
-  .section-label::after {
-    content: '';
-    flex: 1;
-    height: 1px;
-    background: var(--border);
-  }
-
-  /* Upload zone */
-  .upload-zone {
-    border: 2px dashed var(--border);
-    border-radius: 4px;
-    padding: 32px 16px;
-    text-align: center;
-    cursor: pointer;
-    transition: all 0.2s;
-    position: relative;
     overflow: hidden;
   }
 
-  .upload-zone:hover, .upload-zone.drag-over {
-    border-color: var(--amber);
-    background: rgba(212,134,10,0.05);
+  .card-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 16px;
+    background: var(--surface2);
+    border-bottom: 1px solid var(--border);
+    cursor: pointer;
+    user-select: none;
   }
 
-  .upload-zone input { display: none; }
-
-  .upload-icon {
-    font-size: 32px;
-    margin-bottom: 12px;
-    opacity: 0.6;
+  .card-header .step-num {
+    font-family: var(--font-display);
+    font-size: 20px;
+    color: var(--amber);
+    min-width: 28px;
   }
 
-  .upload-zone p {
+  .card-header .step-title {
+    font-family: var(--font-mono);
     font-size: 14px;
-    color: var(--text-dim);
-    line-height: 1.5;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--text);
   }
 
-  .upload-zone strong {
-    color: var(--amber-bright);
+  .card-body {
+    padding: 16px;
   }
 
-  /* Controls */
-  .control-row {
-    margin-bottom: 14px;
-  }
+  /* ── Two-column rows ── */
+  .row { display: flex; gap: 16px; flex-wrap: wrap; }
+  .col { flex: 1; min-width: 200px; }
+  .col-full { flex-basis: 100%; }
+
+  /* ── Controls ── */
+  .control-row { margin-bottom: 12px; }
 
   .control-label {
     font-family: var(--font-mono);
     font-size: 13px;
     color: var(--steel);
-    margin-bottom: 6px;
+    margin-bottom: 4px;
     display: flex;
     justify-content: space-between;
     align-items: center;
   }
 
-  .control-value {
-    color: var(--amber-bright);
-    font-weight: 600;
-  }
+  .control-value { color: var(--amber-bright); font-weight: 600; }
 
   input[type="range"] {
-    width: 100%;
-    -webkit-appearance: none;
-    height: 3px;
-    background: var(--border);
-    border-radius: 2px;
-    outline: none;
-    cursor: pointer;
+    width: 100%; -webkit-appearance: none; height: 4px;
+    background: var(--border); border-radius: 2px; outline: none; cursor: pointer;
   }
-
   input[type="range"]::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    width: 14px; height: 14px;
-    border-radius: 50%;
-    background: var(--amber-bright);
-    box-shadow: 0 0 8px rgba(245,166,35,0.5);
-    cursor: pointer;
+    -webkit-appearance: none; width: 16px; height: 16px; border-radius: 50%;
+    background: var(--amber-bright); box-shadow: 0 0 8px rgba(245,166,35,0.5); cursor: pointer;
   }
 
   input[type="number"], input[type="text"], select {
-    width: 100%;
-    background: var(--bg);
-    border: 1px solid var(--border);
-    color: var(--text);
-    font-family: var(--font-mono);
-    font-size: 14px;
-    padding: 8px 12px;
-    border-radius: 3px;
-    outline: none;
-    transition: border-color 0.2s;
+    width: 100%; background: var(--bg); border: 1px solid var(--border);
+    color: var(--text); font-family: var(--font-mono); font-size: 14px;
+    padding: 7px 10px; border-radius: 3px; outline: none; transition: border-color 0.2s;
   }
-
-  input[type="number"]:focus, select:focus {
-    border-color: var(--amber);
-  }
-
+  input[type="number"]:focus, select:focus { border-color: var(--amber); }
   select option { background: var(--surface); }
 
-  .input-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-  }
+  .input-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .input-grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
 
-  .input-unit {
-    position: relative;
-  }
-
+  .input-unit { position: relative; }
   .input-unit span {
-    position: absolute;
-    right: 10px;
-    top: 50%;
-    transform: translateY(-50%);
-    font-family: var(--font-mono);
-    font-size: 13px;
-    color: var(--text-dim);
-    pointer-events: none;
+    position: absolute; right: 8px; top: 50%; transform: translateY(-50%);
+    font-family: var(--font-mono); font-size: 12px; color: var(--text-dim); pointer-events: none;
   }
+  .input-unit input { padding-right: 34px; }
 
-  .input-unit input { padding-right: 32px; }
-
-  /* Buttons */
-  .btn {
-    width: 100%;
-    padding: 12px;
-    font-family: var(--font-display);
-    font-size: 18px;
-    letter-spacing: 2px;
-    border: none;
-    border-radius: 3px;
-    cursor: pointer;
-    transition: all 0.2s;
-    text-transform: uppercase;
-  }
-
-  .btn-primary {
-    background: var(--amber);
-    color: #0f0d0b;
-  }
-
-  .btn-primary:hover {
-    background: var(--amber-bright);
-    box-shadow: 0 0 20px rgba(245,166,35,0.3);
-    transform: translateY(-1px);
-  }
-
-  .btn-primary:disabled {
-    background: var(--border);
-    color: var(--text-dim);
-    cursor: not-allowed;
-    transform: none;
-    box-shadow: none;
-  }
-
-  .btn-secondary {
-    background: transparent;
-    color: var(--steel-bright);
-    border: 1px solid var(--border);
-    font-size: 14px;
-    letter-spacing: 1px;
-    margin-top: 8px;
-  }
-
-  .btn-secondary:hover {
-    border-color: var(--steel);
-    background: rgba(143,163,168,0.05);
-  }
-
-  .btn-secondary:disabled {
-    opacity: 0.4;
-    cursor: not-allowed;
-  }
-
-  /* Toggle buttons */
-  .toggle-group {
-    display: flex;
-    gap: 2px;
-  }
+  /* ── Toggle buttons ── */
+  .toggle-group { display: flex; gap: 2px; }
 
   .toggle-btn {
-    flex: 1;
-    padding: 8px;
-    background: var(--bg);
-    border: 1px solid var(--border);
-    color: var(--text-dim);
-    font-family: var(--font-mono);
-    font-size: 13px;
-    cursor: pointer;
-    transition: all 0.15s;
-    text-align: center;
+    flex: 1; padding: 7px 6px; background: var(--bg); border: 1px solid var(--border);
+    color: var(--text-dim); font-family: var(--font-mono); font-size: 13px;
+    cursor: pointer; transition: all 0.15s; text-align: center;
   }
-
-  .toggle-btn.active {
-    background: var(--amber-dim);
-    border-color: var(--amber);
-    color: var(--amber-bright);
-  }
-
+  .toggle-btn.active { background: var(--amber-dim); border-color: var(--amber); color: var(--amber-bright); }
   .toggle-btn:first-child { border-radius: 3px 0 0 3px; }
   .toggle-btn:last-child { border-radius: 0 3px 3px 0; }
 
-  /* MIDDLE — Canvas */
-  .panel-center {
-    display: flex;
-    flex-direction: column;
-    background: var(--surface);
-    position: relative;
-    overflow: hidden;
+  /* ── Buttons ── */
+  .btn {
+    width: 100%; padding: 10px; font-family: var(--font-display); font-size: 18px;
+    letter-spacing: 2px; border: none; border-radius: 3px; cursor: pointer;
+    transition: all 0.2s; text-transform: uppercase;
+  }
+  .btn-primary { background: var(--amber); color: #0f0d0b; }
+  .btn-primary:hover { background: var(--amber-bright); box-shadow: 0 0 16px rgba(245,166,35,0.3); }
+  .btn-primary:disabled { background: var(--border); color: var(--text-dim); cursor: not-allowed; }
+
+  .btn-secondary {
+    background: transparent; color: var(--steel-bright); border: 1px solid var(--border);
+    font-size: 14px; letter-spacing: 1px; margin-top: 6px;
+  }
+  .btn-secondary:hover { border-color: var(--steel); background: rgba(143,163,168,0.05); }
+  .btn-secondary:disabled { opacity: 0.4; cursor: not-allowed; }
+
+  .btn-row { display: flex; gap: 8px; }
+  .btn-row .btn { flex: 1; }
+
+  /* ── Info boxes ── */
+  .info-box {
+    padding: 10px 12px; border-radius: 4px;
+    font-family: var(--font-mono); font-size: 13px; line-height: 1.6;
+    margin-top: 10px;
+  }
+  .info-box.material { background: var(--bg); border: 1px solid var(--border); }
+  .info-box.bit { background: rgba(212,134,10,0.06); border: 1px solid var(--amber-dim); }
+  .info-box.cnc-rec { background: rgba(39,174,96,0.06); border: 1px solid rgba(39,174,96,0.25); }
+  .info-box .box-title { font-weight: 600; margin-bottom: 4px; }
+  .info-box.bit .box-title { color: var(--amber); }
+  .info-box.cnc-rec .box-title { color: var(--green); }
+
+  .apply-btn {
+    margin-top: 8px; padding: 5px 14px; background: var(--green); color: #0f0d0b;
+    border: none; border-radius: 3px; font-family: var(--font-mono); font-size: 13px;
+    cursor: pointer; font-weight: 600;
+  }
+  .apply-btn:hover { filter: brightness(1.15); }
+
+  /* ── Effect explainer ── */
+  .effect-box {
+    padding: 10px 12px; background: var(--bg); border: 1px solid var(--border);
+    border-radius: 4px; font-family: var(--font-mono); font-size: 13px; line-height: 1.6;
+    margin-top: 8px;
   }
 
-  .canvas-toolbar {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 12px 20px;
-    border-bottom: 1px solid var(--border);
-    background: var(--surface);
+  /* ── Upload zone ── */
+  .upload-zone {
+    border: 2px dashed var(--border); border-radius: 4px; padding: 20px 16px;
+    text-align: center; cursor: pointer; transition: all 0.2s;
   }
+  .upload-zone:hover, .upload-zone.drag-over { border-color: var(--amber); background: rgba(212,134,10,0.05); }
+  .upload-zone input { display: none; }
+  .upload-zone p { font-size: 14px; color: var(--text-dim); line-height: 1.5; }
+  .upload-zone strong { color: var(--amber-bright); }
 
-  .canvas-toolbar-label {
-    font-family: var(--font-mono);
-    font-size: 13px;
-    color: var(--text-dim);
-    letter-spacing: 1px;
+  /* ── Canvas / Preview ── */
+  .preview-bar {
+    display: flex; align-items: center; gap: 10px; margin-bottom: 8px;
   }
-
-  .view-tabs {
-    display: flex;
-    gap: 2px;
-    margin-left: auto;
+  .preview-bar .label {
+    font-family: var(--font-mono); font-size: 13px; color: var(--text-dim); letter-spacing: 1px;
   }
+  .chip {
+    padding: 2px 10px; background: var(--surface2); border: 1px solid var(--border);
+    border-radius: 20px; font-family: var(--font-mono); font-size: 12px; color: var(--text-dim);
+  }
+  .view-tabs { display: flex; gap: 2px; margin-left: auto; }
 
   .view-tab {
-    padding: 5px 14px;
-    background: transparent;
-    border: 1px solid var(--border);
-    color: var(--text-dim);
-    font-family: var(--font-mono);
-    font-size: 13px;
-    cursor: pointer;
-    transition: all 0.15s;
-    letter-spacing: 1px;
+    padding: 5px 14px; background: transparent; border: 1px solid var(--border);
+    color: var(--text-dim); font-family: var(--font-mono); font-size: 13px;
+    cursor: pointer; transition: all 0.15s; letter-spacing: 1px;
   }
+  .view-tab.active { background: var(--surface2); color: var(--amber-bright); border-color: var(--amber-dim); }
 
-  .view-tab.active {
-    background: var(--surface2);
-    color: var(--amber-bright);
-    border-color: var(--amber-dim);
-  }
-
-  .canvas-area {
-    flex: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    overflow: hidden;
-    padding: 12px;
-    background: var(--surface);
+  .canvas-wrap {
+    background: var(--surface2); border: 1px solid var(--border); border-radius: 4px;
+    min-height: 180px; max-height: 400px;
+    display: flex; align-items: center; justify-content: center;
+    position: relative; overflow: hidden;
   }
 
   .canvas-placeholder {
-    text-align: center;
-    color: var(--text-dim);
+    text-align: center; color: var(--text-dim); padding: 30px;
   }
-
-  .canvas-placeholder .big-icon {
-    font-size: 64px;
-    opacity: 0.15;
-    margin-bottom: 16px;
-    display: block;
-  }
-
-  .canvas-placeholder p {
-    font-family: var(--font-mono);
-    font-size: 12px;
-    letter-spacing: 1px;
-  }
+  .canvas-placeholder .big-icon { font-size: 48px; opacity: 0.15; display: block; margin-bottom: 8px; }
+  .canvas-placeholder p { font-family: var(--font-mono); font-size: 13px; }
 
   canvas {
-    max-width: 100%;
-    max-height: calc(100vh - 130px);
-    width: auto;
-    height: auto;
-    image-rendering: pixelated;
-    border: 1px solid var(--border);
-    box-shadow: 0 0 24px rgba(0,0,0,0.4);
-    display: none;
-    object-fit: contain;
+    max-width: 100%; max-height: 380px; image-rendering: pixelated; display: none;
   }
 
-  canvas.visible { display: block; }
-
-  /* Toolpath canvas overlay */
-  .canvas-stack {
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    height: 100%;
+  #processingOverlay {
+    display: none; position: absolute; inset: 0;
+    background: rgba(15,13,11,0.85); align-items: center; justify-content: center;
+    flex-direction: column; gap: 12px; z-index: 10;
   }
+  #processingOverlay.active { display: flex; }
 
-  /* RIGHT PANEL */
-  .panel-right {
-    border-left: 1px solid var(--border);
-    display: flex;
-    flex-direction: column;
-    background: var(--surface);
-    overflow-y: auto;
+  .spinner {
+    width: 32px; height: 32px; border: 2px solid var(--border);
+    border-top-color: var(--amber); border-radius: 50%; animation: spin 0.8s linear infinite;
   }
+  @keyframes spin { to { transform: rotate(360deg); } }
 
-  /* Gcode preview */
+  .proc-label { font-family: var(--font-mono); font-size: 13px; color: var(--amber); letter-spacing: 2px; }
+
+  /* ── Stats & G-Code ── */
+  .stats-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; }
+
+  .stat-card {
+    background: var(--bg); border: 1px solid var(--border); padding: 8px 10px; border-radius: 3px;
+  }
+  .stat-label { font-family: var(--font-mono); font-size: 11px; color: var(--text-dim); letter-spacing: 1px; text-transform: uppercase; }
+  .stat-value { font-family: var(--font-mono); font-size: 16px; font-weight: 600; color: var(--amber-bright); margin-top: 2px; }
+  .stat-unit { font-size: 11px; color: var(--text-dim); margin-left: 2px; }
+
   .gcode-display {
-    font-family: var(--font-mono);
-    font-size: 12px;
-    line-height: 1.6;
-    color: var(--steel);
-    background: var(--bg);
-    padding: 14px;
-    height: 260px;
-    overflow-y: auto;
-    border-radius: 3px;
-    border: 1px solid var(--border);
+    font-family: var(--font-mono); font-size: 12px; line-height: 1.6; color: var(--steel);
+    background: var(--bg); padding: 10px; height: 180px; overflow-y: auto;
+    border-radius: 3px; border: 1px solid var(--border); margin-top: 10px;
   }
-
   .gcode-display .g-rapid { color: #5dade2; }
   .gcode-display .g-move { color: var(--amber); }
   .gcode-display .g-comment { color: var(--text-dim); opacity: 0.6; }
   .gcode-display .g-spindle { color: #a29bfe; }
   .gcode-display .g-feed { color: var(--green); }
 
-  .stats-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 8px;
+  /* ── Log ── */
+  .log-area {
+    max-height: 80px; overflow-y: auto; padding: 6px 8px;
+    background: var(--bg); border: 1px solid var(--border); border-radius: 3px;
   }
-
-  .stat-card {
-    background: var(--bg);
-    border: 1px solid var(--border);
-    padding: 10px 12px;
-    border-radius: 3px;
-  }
-
-  .stat-label {
-    font-family: var(--font-mono);
-    font-size: 12px;
-    color: var(--text-dim);
-    letter-spacing: 1px;
-    text-transform: uppercase;
-  }
-
-  .stat-value {
-    font-family: var(--font-mono);
-    font-size: 18px;
-    font-weight: 600;
-    color: var(--amber-bright);
-    margin-top: 2px;
-  }
-
-  .stat-unit {
-    font-size: 13px;
-    color: var(--text-dim);
-    margin-left: 3px;
-  }
-
-  /* Progress / messages */
-  .progress-bar-wrap {
-    height: 3px;
-    background: var(--border);
-    border-radius: 2px;
-    overflow: hidden;
-    margin-top: 8px;
-  }
-
-  .progress-bar {
-    height: 100%;
-    background: var(--amber);
-    width: 0%;
-    transition: width 0.3s;
-    box-shadow: 0 0 8px var(--amber);
-  }
-
   .log-line {
-    font-family: var(--font-mono);
-    font-size: 12px;
-    color: var(--text-dim);
-    padding: 4px 0;
-    border-bottom: 1px solid rgba(58,48,40,0.5);
+    font-family: var(--font-mono); font-size: 12px; color: var(--text-dim);
+    padding: 2px 0; border-bottom: 1px solid rgba(58,48,40,0.4);
   }
-
   .log-line.ok::before { content: '✓ '; color: var(--green); }
   .log-line.info::before { content: '→ '; color: var(--amber); }
   .log-line.warn::before { content: '! '; color: #e67e22; }
 
-  .log-area {
-    max-height: 120px;
-    overflow-y: auto;
-    padding: 8px;
-    background: var(--bg);
-    border: 1px solid var(--border);
-    border-radius: 3px;
-  }
+  .progress-bar-wrap { height: 3px; background: var(--border); border-radius: 2px; overflow: hidden; margin-top: 6px; }
+  .progress-bar { height: 100%; background: var(--amber); width: 0%; transition: width 0.3s; }
 
-  /* Scrollbars */
-  ::-webkit-scrollbar { width: 4px; height: 4px; }
+  /* ── Scrollbars ── */
+  ::-webkit-scrollbar { width: 5px; height: 5px; }
   ::-webkit-scrollbar-track { background: var(--bg); }
   ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
   ::-webkit-scrollbar-thumb:hover { background: var(--amber-dim); }
 
-  /* Responsive */
-  @media (max-width: 900px) {
-    .app-layout { grid-template-columns: 1fr; grid-template-rows: auto; height: auto; }
-    .panel-right { display: none; }
-  }
-
-  .chip {
-    display: inline-block;
-    padding: 2px 8px;
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    border-radius: 20px;
-    font-family: var(--font-mono);
-    font-size: 13px;
-    color: var(--text-dim);
-    letter-spacing: 1px;
-  }
-
-  .invert-preview {
-    filter: invert(1);
-  }
-
-  #processingOverlay {
-    display: none;
-    position: absolute;
-    inset: 0;
-    background: rgba(15,13,11,0.85);
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    gap: 16px;
-    z-index: 10;
-  }
-
-  #processingOverlay.active { display: flex; }
-
-  .spinner {
-    width: 36px; height: 36px;
-    border: 2px solid var(--border);
-    border-top-color: var(--amber);
-    border-radius: 50%;
-    animation: spin 0.8s linear infinite;
-  }
-
-  @keyframes spin { to { transform: rotate(360deg); } }
-
-  .proc-label {
-    font-family: var(--font-mono);
-    font-size: 14px;
-    color: var(--amber);
-    letter-spacing: 2px;
+  /* ── Responsive ── */
+  @media (max-width: 700px) {
+    .input-grid, .input-grid-3 { grid-template-columns: 1fr; }
+    .stats-grid { grid-template-columns: 1fr 1fr; }
+    .row { flex-direction: column; }
+    .btn-row { flex-direction: column; }
   }
 </style>
 </head>
@@ -604,375 +369,312 @@
 <header>
   <div class="logo">StampForge</div>
   <div class="tagline">CNC Leather Stamp Generator</div>
-  <div class="status-bar">
-    <div class="status-dot"></div>
-    <span>READY</span>
+  <div class="header-actions">
+    <button class="btn-reset" onclick="resetTool()">↺ Reset</button>
+    <div class="status-bar"><div class="status-dot"></div><span>READY</span></div>
   </div>
 </header>
 
-<div class="app-layout">
+<div class="main">
 
-  <!-- LEFT PANEL: Controls -->
-  <div class="panel-left">
-
-    <!-- Step 01: Material Selection (MOVED UP) -->
-    <div class="panel-section">
-      <div class="section-label">01 Material Selection</div>
-
-      <div class="control-row">
-        <div class="control-label">Stamp Material</div>
-        <select id="materialSelect" onchange="applyMaterialPreset()">
-          <option value="">— Choose your stamp material —</option>
-          <optgroup label="Recommended for Leather Stamps">
-            <option value="delrin">Delrin / POM (Best choice — crisp edges)</option>
-            <option value="brass">Brass (Durable, fine detail)</option>
-            <option value="aluminum">Aluminum 6061 (Production runs)</option>
-            <option value="wood">Hardwood — Maple / Cherry</option>
-            <option value="acrylic">Acrylic / PMMA (Test stamps)</option>
-          </optgroup>
-        </select>
-      </div>
-
-      <div id="materialInfo" style="display:none;font-family:var(--font-mono);font-size:14px;line-height:1.7;padding:10px;background:var(--bg);border:1px solid var(--border);border-radius:3px;margin-top:6px">
-        <div id="materialInfoText"></div>
-      </div>
-
-      <div id="bitRecommendation" style="display:none;margin-top:10px;padding:10px;background:rgba(212,134,10,0.08);border:1px solid var(--amber-dim);border-radius:3px;font-family:var(--font-mono);font-size:14px;line-height:1.7">
-        <div style="color:var(--amber);margin-bottom:4px;font-weight:600">⚙ Recommended Bit</div>
-        <div id="bitRecText"></div>
-      </div>
-
-      <div id="cncSettingsRec" style="display:none;margin-top:10px;padding:10px;background:rgba(39,174,96,0.07);border:1px solid rgba(39,174,96,0.3);border-radius:3px;font-family:var(--font-mono);font-size:14px;line-height:1.7">
-        <div style="color:var(--green);margin-bottom:4px;font-weight:600">✓ Recommended CNC Settings</div>
-        <div id="cncRecText"></div>
-        <button onclick="applyCncRecommendation()" style="margin-top:8px;padding:5px 12px;background:var(--green);color:#0f0d0b;border:none;border-radius:3px;font-family:var(--font-mono);font-size:14px;cursor:pointer;font-weight:600">Apply These Settings</button>
-      </div>
+  <!-- ══════════ STEP 1: MATERIAL ══════════ -->
+  <div class="card">
+    <div class="card-header">
+      <span class="step-num">01</span>
+      <span class="step-title">Material &amp; Machine</span>
     </div>
-
-    <!-- Step 02: Source Image -->
-    <div class="panel-section">
-      <div class="section-label">02 Source Image</div>
-      <div class="upload-zone" id="uploadZone">
-        <input type="file" id="fileInput" accept="image/*">
-        <div class="upload-icon">⬡</div>
-        <p><strong>Drop image here</strong><br>or click to browse<br><small style="font-size:14px;opacity:0.6">PNG · JPG · SVG · BMP</small></p>
-      </div>
-    </div>
-
-    <!-- Step 03: Image Processing -->
-    <div class="panel-section">
-      <div class="section-label">03 Image Processing</div>
-
-      <div class="control-row">
-        <div class="control-label">Mode</div>
-        <div class="toggle-group">
-          <button class="toggle-btn active" onclick="setMode('threshold')" id="mode-threshold">THRESHOLD</button>
-          <button class="toggle-btn" onclick="setMode('contour')" id="mode-contour">CONTOUR</button>
-          <button class="toggle-btn" onclick="setMode('halftone')" id="mode-halftone">DEPTH</button>
-        </div>
-      </div>
-
-      <div class="control-row">
-        <div class="control-label">
-          <span>Threshold</span>
-          <span class="control-value" id="thresholdVal">128</span>
-        </div>
-        <input type="range" id="threshold" min="0" max="255" value="128" oninput="updateThreshold(this.value)">
-      </div>
-
-      <div class="control-row">
-        <div class="control-label">
-          <span>Blur / Smoothing</span>
-          <span class="control-value" id="blurVal">1</span>
-        </div>
-        <input type="range" id="blur" min="0" max="10" value="1" oninput="updateBlur(this.value)">
-      </div>
-
-      <div class="control-row">
-        <div class="control-label"><span>Stamp Effect</span></div>
-        <div class="toggle-group">
-          <button class="toggle-btn active" onclick="setInvert(false)" id="inv-no">RAISED</button>
-          <button class="toggle-btn" onclick="setInvert(true)" id="inv-yes">RECESSED</button>
-        </div>
-        <!-- Effect explanation box -->
-        <div id="effectExplainer" style="margin-top:8px;padding:10px;background:var(--bg);border:1px solid var(--border);border-radius:3px;font-family:var(--font-mono);font-size:14px;line-height:1.6">
-          <div id="effectRaisedMsg" style="color:var(--amber)">
-            <strong style="color:var(--amber-bright)">RAISED (Traditional Stamp)</strong><br>
-            The CNC carves away the background material, leaving your design standing proud above the surface. When pressed into leather, the design creates a <strong>pressed-in impression</strong> in the leather.
+    <div class="card-body">
+      <div class="row">
+        <div class="col">
+          <div class="control-row">
+            <div class="control-label">Stamp Material</div>
+            <select id="materialSelect" onchange="applyMaterialPreset()">
+              <option value="">— Choose your stamp material —</option>
+              <option value="delrin">Delrin / POM (Best — crisp edges)</option>
+              <option value="brass">Brass (Durable, fine detail)</option>
+              <option value="aluminum">Aluminum 6061 (Production runs)</option>
+              <option value="wood">Hardwood — Maple / Cherry</option>
+              <option value="acrylic">Acrylic / PMMA (Test stamps)</option>
+            </select>
           </div>
-          <div id="effectRecessedMsg" style="display:none;color:var(--steel)">
-            <strong style="color:var(--steel-bright)">RECESSED (Negative / Embossing Die)</strong><br>
-            The CNC carves the design itself into the material, creating a hollow cavity. When pressed against leather, the design forces the leather to <strong>rise up and stand out</strong> in the shape of your design (like a bas-relief).
+        </div>
+        <div class="col">
+          <div class="control-row">
+            <div class="control-label">Machine Preset</div>
+            <select id="machinePreset" onchange="applyPreset()">
+              <option value="">— Select Preset —</option>
+              <optgroup label="NestWorks C500">
+                <option value="c500_wood">C500 · Hardwood</option>
+                <option value="c500_delrin">C500 · Delrin/POM</option>
+                <option value="c500_acrylic">C500 · Acrylic</option>
+                <option value="c500_brass">C500 · Brass (MQL)</option>
+                <option value="c500_aluminum">C500 · Aluminum (MQL)</option>
+              </optgroup>
+              <optgroup label="Other Machines">
+                <option value="shapeoko">Shapeoko / X-Carve</option>
+                <option value="workbee">WorkBee / OpenBuilds</option>
+                <option value="nomad">Nomad 3</option>
+              </optgroup>
+            </select>
           </div>
         </div>
       </div>
-
-      <div class="control-row">
-        <div class="control-label">
-          <span>Dilation (thicken lines)</span>
-          <span class="control-value" id="dilateVal">0</span>
-        </div>
-        <input type="range" id="dilate" min="0" max="8" value="0" oninput="updateDilate(this.value)">
-      </div>
-    </div>
-
-    <!-- Step 04: Stamp Dimensions -->
-    <div class="panel-section">
-      <div class="section-label">04 Stamp Dimensions</div>
-
-      <div class="control-row">
-        <div class="control-label">Units</div>
-        <div class="toggle-group">
-          <button class="toggle-btn active" onclick="setUnits('mm')" id="unit-mm">MM</button>
-          <button class="toggle-btn" onclick="setUnits('in')" id="unit-in">INCHES</button>
-        </div>
-      </div>
-
-      <div class="input-grid">
-        <div class="control-row">
-          <div class="control-label">Width</div>
-          <div class="input-unit">
-            <input type="number" id="stampW" value="50" min="5" max="200" step="1">
-            <span id="unitLabelW">mm</span>
+      <div id="materialInfoArea" style="display:none">
+        <div class="info-box material" id="materialInfoBox"></div>
+        <div class="row" style="margin-top:8px">
+          <div class="col">
+            <div class="info-box bit" id="bitRecBox" style="display:none">
+              <div class="box-title">⚙ Recommended Bit</div>
+              <div id="bitRecText"></div>
+            </div>
           </div>
-        </div>
-        <div class="control-row">
-          <div class="control-label">Height</div>
-          <div class="input-unit">
-            <input type="number" id="stampH" value="50" min="5" max="200" step="1">
-            <span id="unitLabelH">mm</span>
-          </div>
-        </div>
-        <div class="control-row">
-          <div class="control-label">Cut Depth</div>
-          <div class="input-unit">
-            <input type="number" id="cutDepth" value="3" min="0.5" max="15" step="0.5">
-            <span id="unitLabelD">mm</span>
-          </div>
-        </div>
-        <div class="control-row">
-          <div class="control-label">Stock Thick</div>
-          <div class="input-unit">
-            <input type="number" id="stockThick" value="20" min="1" max="50" step="1">
-            <span id="unitLabelS">mm</span>
+          <div class="col">
+            <div class="info-box cnc-rec" id="cncRecBox" style="display:none">
+              <div class="box-title">✓ Recommended CNC Settings</div>
+              <div id="cncRecText"></div>
+              <button class="apply-btn" onclick="applyCncRecommendation()">Apply These Settings</button>
+            </div>
           </div>
         </div>
       </div>
-
-      <div class="control-row">
-        <div class="control-label">Keep Aspect Ratio</div>
-        <div class="toggle-group">
-          <button class="toggle-btn active" id="ar-yes" onclick="setAspect(true)">YES</button>
-          <button class="toggle-btn" id="ar-no" onclick="setAspect(false)">NO</button>
-        </div>
-      </div>
-    </div>
-
-    <!-- Step 05: CNC Parameters -->
-    <div class="panel-section">
-      <div class="section-label">05 CNC Settings</div>
-      <div class="input-grid">
-        <div class="control-row">
-          <div class="control-label">Bit Diameter</div>
-          <div class="input-unit">
-            <input type="number" id="bitDia" value="3.175" min="0.5" max="12" step="0.125">
-            <span>mm</span>
-          </div>
-        </div>
-        <div class="control-row">
-          <div class="control-label">Stepover %</div>
-          <div class="input-unit">
-            <input type="number" id="stepover" value="40" min="10" max="90" step="5">
-            <span>%</span>
-          </div>
-        </div>
-        <div class="control-row">
-          <div class="control-label">Feed Rate</div>
-          <div class="input-unit">
-            <input type="number" id="feedRate" value="1000" min="100" max="5000" step="100">
-            <span>mm/m</span>
-          </div>
-        </div>
-        <div class="control-row">
-          <div class="control-label">Plunge Rate</div>
-          <div class="input-unit">
-            <input type="number" id="plungeRate" value="300" min="50" max="2000" step="50">
-            <span>mm/m</span>
-          </div>
-        </div>
-        <div class="control-row">
-          <div class="control-label">Spindle RPM</div>
-          <div class="input-unit">
-            <input type="number" id="rpm" value="18000" min="1000" max="30000" step="500">
-            <span>rpm</span>
-          </div>
-        </div>
-        <div class="control-row">
-          <div class="control-label">Pass Depth</div>
-          <div class="input-unit">
-            <input type="number" id="passDepth" value="1" min="0.25" max="5" step="0.25">
-            <span>mm</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="control-row">
-        <div class="control-label">Bit Type</div>
-        <select id="bitType">
-          <option value="endmill">Flat End Mill</option>
-          <option value="vbit">V-Bit (60°)</option>
-          <option value="ballnose">Ball Nose</option>
-          <option value="vbit90">V-Bit (90°)</option>
-        </select>
-      </div>
-
-      <div class="control-row">
-        <div class="control-label">Toolpath Strategy</div>
-        <select id="strategy">
-          <option value="raster">Raster (X-axis)</option>
-          <option value="raster_y">Raster (Y-axis)</option>
-          <option value="both">Crosshatch</option>
-          <option value="contour">Contour Only</option>
-        </select>
-      </div>
-    </div>
-
-    <!-- Step 06: Generate -->
-    <div class="panel-section">
-      <div class="section-label">06 Generate</div>
-      <button class="btn btn-primary" id="generateBtn" onclick="generateGcode()" disabled>
-        Generate G-Code
-      </button>
-      <button class="btn btn-secondary" id="downloadBtn" onclick="downloadGcode()" disabled>
-        ⬇ Download .nc File
-      </button>
-      <button class="btn btn-secondary" id="downloadSvgBtn" onclick="downloadSVG()" disabled style="margin-top:6px;">
-        ⬇ Download Preview SVG
-      </button>
-      <button class="btn btn-secondary" id="resetBtn" onclick="resetTool()" style="margin-top:6px;border-color:var(--red);color:var(--red);">
-        ↺ Reset / New Design
-      </button>
-      <div class="progress-bar-wrap">
-        <div class="progress-bar" id="progressBar"></div>
-      </div>
-      <div class="log-area" id="logArea" style="margin-top:10px;"></div>
-    </div>
-
-  </div>
-
-  <!-- MIDDLE: Canvas Preview -->
-  <div class="panel-center">
-    <div class="canvas-toolbar">
-      <span class="canvas-toolbar-label">PREVIEW</span>
-      <div class="chip" id="imgInfoChip">—</div>
-      <div class="view-tabs">
-        <button class="view-tab active" onclick="setView('source')" id="tab-source">SOURCE</button>
-        <button class="view-tab" onclick="setView('processed')" id="tab-processed">PROCESSED</button>
-        <button class="view-tab" onclick="setView('toolpath')" id="tab-toolpath">TOOLPATH</button>
-      </div>
-    </div>
-
-    <div class="canvas-area" id="canvasArea">
-      <div class="canvas-placeholder" id="placeholder">
-        <span class="big-icon">⬡</span>
-        <p>LOAD AN IMAGE TO BEGIN</p>
-        <p style="margin-top:8px;opacity:0.5;">Drop image into left panel</p>
-      </div>
-      <div class="canvas-stack" style="display:none" id="canvasStack">
-        <canvas id="sourceCanvas"></canvas>
-        <canvas id="processedCanvas" style="display:none"></canvas>
-        <canvas id="toolpathCanvas" style="display:none"></canvas>
-      </div>
-      <div id="processingOverlay">
-        <div class="spinner"></div>
-        <div class="proc-label" id="procLabel">PROCESSING...</div>
+      <div id="presetInfoBar" style="display:none;margin-top:8px">
+        <div class="info-box material" id="presetInfo"></div>
       </div>
     </div>
   </div>
 
-  <!-- RIGHT: G-Code + Stats -->
-  <div class="panel-right">
-
-    <div class="panel-section">
-      <div class="section-label">Job Statistics</div>
-      <div class="stats-grid">
-        <div class="stat-card">
-          <div class="stat-label">Est. Time</div>
-          <div class="stat-value" id="statTime">—</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-label">G-Code Lines</div>
-          <div class="stat-value" id="statLines">—</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-label">Passes</div>
-          <div class="stat-value" id="statPasses">—</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-label">File Size</div>
-          <div class="stat-value" id="statSize">—</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-label">Stamp Width</div>
-          <div class="stat-value" id="statW">—</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-label">Stamp Height</div>
-          <div class="stat-value" id="statH">—</div>
-        </div>
-      </div>
+  <!-- ══════════ STEP 2: IMAGE ══════════ -->
+  <div class="card">
+    <div class="card-header">
+      <span class="step-num">02</span>
+      <span class="step-title">Source Image</span>
     </div>
-
-    <div class="panel-section" style="flex:1">
-      <div class="section-label">G-Code Preview</div>
-      <div class="gcode-display" id="gcodeDisplay">
-        <span style="color:var(--text-dim);font-size:13px;">// Generate G-code to preview...</span>
-      </div>
-    </div>
-
-    <div class="panel-section">
-      <div class="section-label">Machine Presets</div>
-      <select id="machinePreset" onchange="applyPreset()" style="margin-bottom:8px">
-        <option value="">— Select Preset —</option>
-        <optgroup label="NestWorks C500 (Your Machine)">
-          <option value="c500_wood">C500 · Hardwood Stamp (maple/cherry)</option>
-          <option value="c500_delrin">C500 · Delrin/POM Stamp (sharp edges)</option>
-          <option value="c500_acrylic">C500 · Acrylic/PMMA Stamp</option>
-          <option value="c500_brass">C500 · Brass Die (MQL on)</option>
-          <option value="c500_aluminum">C500 · Aluminum Die (MQL on)</option>
-        </optgroup>
-        <optgroup label="Other Machines">
-          <option value="shapeoko">Shapeoko / X-Carve</option>
-          <option value="workbee">WorkBee / OpenBuilds</option>
-          <option value="nomad">Nomad 3</option>
-        </optgroup>
-      </select>
-      <div style="font-family:var(--font-mono);font-size:13px;color:var(--text-dim);line-height:1.6;padding:8px;background:var(--bg);border:1px solid var(--border);border-radius:3px" id="presetInfo">
-        Select a machine preset to auto-configure feed rates and limits.
-      </div>
-    </div>
-
-    <div class="panel-section">
-      <div class="section-label">Notes</div>
-      <div style="font-family:var(--font-mono);font-size:14px;color:var(--text-dim);line-height:1.7;padding:8px;background:var(--bg);border:1px solid var(--border);border-radius:3px">
-        <div style="color:var(--amber);margin-bottom:4px">NestWorks C500 Tips</div>
-        <div>• Work area: <strong style="color:var(--steel-bright)">230 × 213 × 100mm</strong> — keep stamps within this</div>
-        <div>• Use <strong style="color:var(--amber)">Delrin or brass</strong> for best leather stamp results</div>
-        <div>• Enable MQL for brass/aluminum dies — extends tool life</div>
-        <div>• The ATC lets you rough with 1/8" then finish with a V-bit automatically</div>
-        <div>• ±0.02mm precision → very fine detail is achievable</div>
-        <div style="margin-top:6px;border-top:1px solid var(--border);padding-top:6px">
-        <div>• <strong style="color:var(--amber)">RAISED</strong> = design stands proud; presses an <em>impression into</em> the leather</div>
-        <div>• <strong style="color:var(--amber)">RECESSED</strong> = hollow cavity; forces leather to <em>rise up</em> in shape of design</div>
-        <div>• V-bit 60° gives the crispest leather impressions</div>
-        <div>• Ball nose for smooth depth/gradient work</div>
+    <div class="card-body">
+      <div class="row">
+        <div class="col">
+          <div class="upload-zone" id="uploadZone">
+            <input type="file" id="fileInput" accept="image/*">
+            <p><strong>Drop image here</strong> or click to browse<br>
+            <small style="opacity:0.6">PNG · JPG · SVG · BMP</small></p>
+          </div>
         </div>
-        <div style="margin-top:6px;color:var(--amber);opacity:0.7">⚠ Always verify in Fusion 360 or NestWorks SmartCAM before cutting</div>
+        <div class="col">
+          <div class="preview-bar">
+            <span class="label">PREVIEW</span>
+            <div class="chip" id="imgInfoChip">—</div>
+            <div class="view-tabs">
+              <button class="view-tab active" onclick="setView('source')" id="tab-source">SRC</button>
+              <button class="view-tab" onclick="setView('processed')" id="tab-processed">PROC</button>
+              <button class="view-tab" onclick="setView('toolpath')" id="tab-toolpath">PATH</button>
+            </div>
+          </div>
+          <div class="canvas-wrap" id="canvasArea">
+            <div class="canvas-placeholder" id="placeholder">
+              <span class="big-icon">⬡</span>
+              <p>Load an image to begin</p>
+            </div>
+            <div style="display:none" id="canvasStack">
+              <canvas id="sourceCanvas"></canvas>
+              <canvas id="processedCanvas" style="display:none"></canvas>
+              <canvas id="toolpathCanvas" style="display:none"></canvas>
+            </div>
+            <div id="processingOverlay">
+              <div class="spinner"></div>
+              <div class="proc-label" id="procLabel">PROCESSING...</div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 
-</div>
+  <!-- ══════════ STEP 3: IMAGE PROCESSING ══════════ -->
+  <div class="card">
+    <div class="card-header">
+      <span class="step-num">03</span>
+      <span class="step-title">Image Processing</span>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="col">
+          <div class="control-row">
+            <div class="control-label">Mode</div>
+            <div class="toggle-group">
+              <button class="toggle-btn active" onclick="setMode('threshold')" id="mode-threshold">THRESHOLD</button>
+              <button class="toggle-btn" onclick="setMode('contour')" id="mode-contour">CONTOUR</button>
+              <button class="toggle-btn" onclick="setMode('halftone')" id="mode-halftone">DEPTH</button>
+            </div>
+          </div>
+          <div class="control-row">
+            <div class="control-label"><span>Threshold</span><span class="control-value" id="thresholdVal">128</span></div>
+            <input type="range" id="threshold" min="0" max="255" value="128" oninput="updateThreshold(this.value)">
+          </div>
+          <div class="control-row">
+            <div class="control-label"><span>Blur / Smoothing</span><span class="control-value" id="blurVal">1</span></div>
+            <input type="range" id="blur" min="0" max="10" value="1" oninput="updateBlur(this.value)">
+          </div>
+          <div class="control-row">
+            <div class="control-label"><span>Dilation (thicken lines)</span><span class="control-value" id="dilateVal">0</span></div>
+            <input type="range" id="dilate" min="0" max="8" value="0" oninput="updateDilate(this.value)">
+          </div>
+        </div>
+        <div class="col">
+          <div class="control-row">
+            <div class="control-label">Stamp Effect</div>
+            <div class="toggle-group">
+              <button class="toggle-btn active" onclick="setInvert(false)" id="inv-no">RAISED</button>
+              <button class="toggle-btn" onclick="setInvert(true)" id="inv-yes">RECESSED</button>
+            </div>
+          </div>
+          <div class="effect-box">
+            <div id="effectRaisedMsg">
+              <strong style="color:var(--amber-bright)">RAISED (Traditional Stamp)</strong><br>
+              The CNC carves away the background material, leaving your design standing proud above the surface.
+              When pressed into leather, the design creates a <strong style="color:var(--amber)">pressed-in impression</strong> in the leather.
+            </div>
+            <div id="effectRecessedMsg" style="display:none">
+              <strong style="color:var(--steel-bright)">RECESSED (Embossing Die)</strong><br>
+              The CNC carves the design itself into the material, creating a hollow cavity.
+              When pressed against leather, the leather is forced to <strong style="color:var(--amber)">rise up and stand out</strong> in the shape of your design (bas-relief).
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════ STEP 4: DIMENSIONS & CNC ══════════ -->
+  <div class="card">
+    <div class="card-header">
+      <span class="step-num">04</span>
+      <span class="step-title">Dimensions &amp; CNC Settings</span>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <!-- Left: Dimensions -->
+        <div class="col">
+          <div class="control-row">
+            <div class="control-label">Units</div>
+            <div class="toggle-group">
+              <button class="toggle-btn active" onclick="setUnits('mm')" id="unit-mm">MM</button>
+              <button class="toggle-btn" onclick="setUnits('in')" id="unit-in">INCHES</button>
+            </div>
+          </div>
+          <div class="input-grid">
+            <div class="control-row">
+              <div class="control-label">Width</div>
+              <div class="input-unit"><input type="number" id="stampW" value="50" min="5" max="300" step="1"><span id="unitLabelW">mm</span></div>
+            </div>
+            <div class="control-row">
+              <div class="control-label">Height</div>
+              <div class="input-unit"><input type="number" id="stampH" value="50" min="5" max="300" step="1"><span id="unitLabelH">mm</span></div>
+            </div>
+            <div class="control-row">
+              <div class="control-label">Cut Depth</div>
+              <div class="input-unit"><input type="number" id="cutDepth" value="3" min="0.5" max="15" step="0.5"><span id="unitLabelD">mm</span></div>
+            </div>
+            <div class="control-row">
+              <div class="control-label">Stock Thick</div>
+              <div class="input-unit"><input type="number" id="stockThick" value="20" min="1" max="50" step="1"><span id="unitLabelS">mm</span></div>
+            </div>
+          </div>
+          <div class="control-row">
+            <div class="control-label">Keep Aspect Ratio</div>
+            <div class="toggle-group">
+              <button class="toggle-btn active" id="ar-yes" onclick="setAspect(true)">YES</button>
+              <button class="toggle-btn" id="ar-no" onclick="setAspect(false)">NO</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: CNC params -->
+        <div class="col">
+          <div class="input-grid">
+            <div class="control-row">
+              <div class="control-label">Bit Diameter</div>
+              <div class="input-unit"><input type="number" id="bitDia" value="3.175" min="0.5" max="12" step="0.125"><span>mm</span></div>
+            </div>
+            <div class="control-row">
+              <div class="control-label">Stepover %</div>
+              <div class="input-unit"><input type="number" id="stepover" value="40" min="10" max="90" step="5"><span>%</span></div>
+            </div>
+            <div class="control-row">
+              <div class="control-label">Feed Rate</div>
+              <div class="input-unit"><input type="number" id="feedRate" value="1000" min="100" max="5000" step="100"><span>mm/m</span></div>
+            </div>
+            <div class="control-row">
+              <div class="control-label">Plunge Rate</div>
+              <div class="input-unit"><input type="number" id="plungeRate" value="300" min="50" max="2000" step="50"><span>mm/m</span></div>
+            </div>
+            <div class="control-row">
+              <div class="control-label">Spindle RPM</div>
+              <div class="input-unit"><input type="number" id="rpm" value="18000" min="1000" max="30000" step="500"><span>rpm</span></div>
+            </div>
+            <div class="control-row">
+              <div class="control-label">Pass Depth</div>
+              <div class="input-unit"><input type="number" id="passDepth" value="1" min="0.25" max="5" step="0.25"><span>mm</span></div>
+            </div>
+          </div>
+          <div class="input-grid">
+            <div class="control-row">
+              <div class="control-label">Bit Type</div>
+              <select id="bitType">
+                <option value="endmill">Flat End Mill</option>
+                <option value="vbit">V-Bit (60°)</option>
+                <option value="ballnose">Ball Nose</option>
+                <option value="vbit90">V-Bit (90°)</option>
+              </select>
+            </div>
+            <div class="control-row">
+              <div class="control-label">Toolpath Strategy</div>
+              <select id="strategy">
+                <option value="raster">Raster (X-axis)</option>
+                <option value="raster_y">Raster (Y-axis)</option>
+                <option value="both">Crosshatch</option>
+                <option value="contour">Contour Only</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════ STEP 5: GENERATE ══════════ -->
+  <div class="card">
+    <div class="card-header">
+      <span class="step-num">05</span>
+      <span class="step-title">Generate &amp; Export</span>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="col">
+          <button class="btn btn-primary" id="generateBtn" onclick="generateGcode()" disabled>Generate G-Code</button>
+          <div class="btn-row">
+            <button class="btn btn-secondary" id="downloadBtn" onclick="downloadGcode()" disabled>⬇ Download .nc</button>
+            <button class="btn btn-secondary" id="downloadSvgBtn" onclick="downloadSVG()" disabled>⬇ Download SVG</button>
+          </div>
+          <div class="progress-bar-wrap"><div class="progress-bar" id="progressBar"></div></div>
+          <div class="log-area" id="logArea" style="margin-top:8px"></div>
+        </div>
+        <div class="col">
+          <div class="stats-grid">
+            <div class="stat-card"><div class="stat-label">Est. Time</div><div class="stat-value" id="statTime">—</div></div>
+            <div class="stat-card"><div class="stat-label">Lines</div><div class="stat-value" id="statLines">—</div></div>
+            <div class="stat-card"><div class="stat-label">Passes</div><div class="stat-value" id="statPasses">—</div></div>
+            <div class="stat-card"><div class="stat-label">File Size</div><div class="stat-value" id="statSize">—</div></div>
+            <div class="stat-card"><div class="stat-label">Width</div><div class="stat-value" id="statW">—</div></div>
+            <div class="stat-card"><div class="stat-label">Height</div><div class="stat-value" id="statH">—</div></div>
+          </div>
+          <div class="gcode-display" id="gcodeDisplay">
+            <span style="color:var(--text-dim)">// Generate G-code to preview...</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- end .main -->
 
 <script>
 // ============================================================
@@ -981,7 +683,6 @@
 let state = {
   imageLoaded: false,
   originalImg: null,
-  originalCanvas: null,
   processedData: null,
   gcodeText: '',
   mode: 'threshold',
@@ -995,18 +696,110 @@ let state = {
   currentView: 'source',
 };
 
-const presets = {
-  // ── NestWorks C500 material-specific presets ──────────────────────────────
-  c500_wood:    { feedRate: 2500, plungeRate: 600,  rpm: 18000, passDepth: 1.5,  bitDia: 3.175, stepover: 40, info: 'NestWorks C500 · Hardwood/Softwood stamp · 1/8" flat end mill · MQL off · Good starting point for maple/cherry stamp blocks' },
-  c500_acrylic: { feedRate: 1800, plungeRate: 400,  rpm: 16000, passDepth: 1.0,  bitDia: 3.175, stepover: 35, info: 'NestWorks C500 · Acrylic/PMMA stamp · 1/8" flat end mill · Slower feed prevents melting · Good for clear acrylic test stamps' },
-  c500_brass:   { feedRate: 600,  plungeRate: 150,  rpm: 18000, passDepth: 0.3,  bitDia: 1.5,   stepover: 30, info: 'NestWorks C500 · Brass stamp die · 1.5mm end mill · Enable MQL · Multiple fine passes · Ideal for durable leather stamps' },
-  c500_aluminum:{ feedRate: 800,  plungeRate: 200,  rpm: 18000, passDepth: 0.5,  bitDia: 3.175, stepover: 35, info: 'NestWorks C500 · Aluminum 6061 stamp · 1/8" end mill · Enable MQL · Good for production-run embossing dies' },
-  c500_delrin:  { feedRate: 2000, plungeRate: 500,  rpm: 15000, passDepth: 1.2,  bitDia: 3.175, stepover: 40, info: 'NestWorks C500 · Delrin/POM stamp · 1/8" flat end mill · MQL off · Excellent for sharp-edged leather stamps' },
-  // ── Other machines ────────────────────────────────────────────────────────
-  shapeoko:     { feedRate: 1000, plungeRate: 300,  rpm: 18000, passDepth: 1.0,  bitDia: 3.175, stepover: 40, info: 'Shapeoko 3/4/Pro · Carbide3D defaults · Safe for wood/acrylic stamps' },
-  workbee:      { feedRate: 1200, plungeRate: 350,  rpm: 18000, passDepth: 1.0,  bitDia: 3.175, stepover: 40, info: 'WorkBee / OpenBuilds LEAD · Community recommended defaults' },
-  nomad:        { feedRate: 600,  plungeRate: 200,  rpm: 10000, passDepth: 0.5,  bitDia: 3.175, stepover: 40, info: 'Nomad 3 · Carbide3D desktop · Slower for precision work' },
+// ============================================================
+// Material data
+// ============================================================
+const materialData = {
+  delrin: {
+    name: 'Delrin / POM',
+    info: '✓ Top recommendation for leather stamps. Machines cleanly, holds extremely crisp edges, resists wear. No coolant needed.',
+    bitRec: 'V-Bit 60° for fine lettering & detail.\nFlat End Mill 1/8" (3.175mm) for clearing.\nTwo-tool strategy: rough with flat, finish with V-bit.',
+    bitType: 'vbit',
+    settings: { feedRate: 2000, plungeRate: 500, rpm: 15000, passDepth: 1.2, bitDia: 3.175, stepover: 40 },
+    cncRec: 'Feed: 2000 mm/min · Plunge: 500 mm/min\nSpindle: 15,000 RPM · Pass: 1.2mm\nBit: 3.175mm (1/8") · Stepover: 40%\nMQL: OFF',
+  },
+  brass: {
+    name: 'Brass',
+    info: 'Excellent durability — lasts thousands of impressions. Slower cuts, fine passes, MQL required.',
+    bitRec: 'Single-flute Carbide End Mill 1.5–2mm.\nV-Bit 60° carbide for sharp lettering.\nRequires MQL (minimum quantity lubrication).',
+    bitType: 'vbit',
+    settings: { feedRate: 600, plungeRate: 150, rpm: 18000, passDepth: 0.3, bitDia: 1.5, stepover: 30 },
+    cncRec: 'Feed: 600 mm/min · Plunge: 150 mm/min\nSpindle: 18,000 RPM · Pass: 0.3mm\nBit: 1.5mm · Stepover: 30%\nMQL: ON (required)',
+  },
+  aluminum: {
+    name: 'Aluminum 6061',
+    info: 'Good for production embossing dies. Harder than Delrin, softer than brass. MQL recommended.',
+    bitRec: '2-flute Carbide End Mill 3.175mm (1/8").\nV-Bit 60° carbide for edges.\nLight cutting oil recommended.',
+    bitType: 'vbit',
+    settings: { feedRate: 800, plungeRate: 200, rpm: 18000, passDepth: 0.5, bitDia: 3.175, stepover: 35 },
+    cncRec: 'Feed: 800 mm/min · Plunge: 200 mm/min\nSpindle: 18,000 RPM · Pass: 0.5mm\nBit: 3.175mm (1/8") · Stepover: 35%\nMQL: ON',
+  },
+  wood: {
+    name: 'Hardwood (Maple / Cherry)',
+    info: 'Good beginner option. Fine grain holds detail well. Not as durable long-term as Delrin or brass.',
+    bitRec: 'V-Bit 60° for lettering and edges.\nFlat End Mill 1/8" for background clearing.\nKeep bits sharp — dull bits tear grain.',
+    bitType: 'vbit',
+    settings: { feedRate: 2500, plungeRate: 600, rpm: 18000, passDepth: 1.5, bitDia: 3.175, stepover: 40 },
+    cncRec: 'Feed: 2500 mm/min · Plunge: 600 mm/min\nSpindle: 18,000 RPM · Pass: 1.5mm\nBit: 3.175mm (1/8") · Stepover: 40%\nMQL: OFF',
+  },
+  acrylic: {
+    name: 'Acrylic / PMMA',
+    info: 'Low-cost test stamps. Brittle — edges chip at high speeds. Slower feeds prevent melting.',
+    bitRec: 'Single-flute End Mill 3.175mm — critical.\nV-Bit 60° at slow speed for detail.\nAvoid multi-flute bits (they melt acrylic).',
+    bitType: 'endmill',
+    settings: { feedRate: 1800, plungeRate: 400, rpm: 16000, passDepth: 1.0, bitDia: 3.175, stepover: 35 },
+    cncRec: 'Feed: 1800 mm/min · Plunge: 400 mm/min\nSpindle: 16,000 RPM · Pass: 1.0mm\nBit: 3.175mm (1/8") · Stepover: 35%\nMQL: OFF (use air blast)',
+  },
 };
+
+let pendingCncSettings = null;
+
+function applyMaterialPreset() {
+  const key = document.getElementById('materialSelect').value;
+  const area = document.getElementById('materialInfoArea');
+  if (!key || !materialData[key]) { area.style.display = 'none'; return; }
+  const m = materialData[key];
+  document.getElementById('materialInfoBox').innerHTML = m.info;
+  document.getElementById('bitRecText').innerHTML = m.bitRec.replace(/\n/g, '<br>');
+  document.getElementById('cncRecText').innerHTML = m.cncRec.replace(/\n/g, '<br>');
+  document.getElementById('bitRecBox').style.display = 'block';
+  document.getElementById('cncRecBox').style.display = 'block';
+  area.style.display = 'block';
+  pendingCncSettings = m;
+  log('Material: ' + m.name, 'info');
+}
+
+function applyCncRecommendation() {
+  if (!pendingCncSettings) return;
+  const s = pendingCncSettings.settings;
+  document.getElementById('feedRate').value = s.feedRate;
+  document.getElementById('plungeRate').value = s.plungeRate;
+  document.getElementById('rpm').value = s.rpm;
+  document.getElementById('passDepth').value = s.passDepth;
+  document.getElementById('bitDia').value = s.bitDia;
+  document.getElementById('stepover').value = s.stepover;
+  document.getElementById('bitType').value = pendingCncSettings.bitType;
+  log('CNC settings applied from material recommendation', 'ok');
+}
+
+// ============================================================
+// Machine presets
+// ============================================================
+const presets = {
+  c500_wood:    { feedRate: 2500, plungeRate: 600,  rpm: 18000, passDepth: 1.5,  bitDia: 3.175, stepover: 40, info: 'C500 · Hardwood stamp · 1/8" flat end mill · MQL off' },
+  c500_acrylic: { feedRate: 1800, plungeRate: 400,  rpm: 16000, passDepth: 1.0,  bitDia: 3.175, stepover: 35, info: 'C500 · Acrylic stamp · 1/8" flat end mill · Slower to prevent melting' },
+  c500_brass:   { feedRate: 600,  plungeRate: 150,  rpm: 18000, passDepth: 0.3,  bitDia: 1.5,   stepover: 30, info: 'C500 · Brass die · 1.5mm end mill · MQL required' },
+  c500_aluminum:{ feedRate: 800,  plungeRate: 200,  rpm: 18000, passDepth: 0.5,  bitDia: 3.175, stepover: 35, info: 'C500 · Aluminum die · 1/8" end mill · MQL recommended' },
+  c500_delrin:  { feedRate: 2000, plungeRate: 500,  rpm: 15000, passDepth: 1.2,  bitDia: 3.175, stepover: 40, info: 'C500 · Delrin/POM stamp · 1/8" flat end mill · Excellent edges' },
+  shapeoko:     { feedRate: 1000, plungeRate: 300,  rpm: 18000, passDepth: 1.0,  bitDia: 3.175, stepover: 40, info: 'Shapeoko 3/4/Pro · Safe defaults for wood/acrylic' },
+  workbee:      { feedRate: 1200, plungeRate: 350,  rpm: 18000, passDepth: 1.0,  bitDia: 3.175, stepover: 40, info: 'WorkBee / OpenBuilds LEAD · Community defaults' },
+  nomad:        { feedRate: 600,  plungeRate: 200,  rpm: 10000, passDepth: 0.5,  bitDia: 3.175, stepover: 40, info: 'Nomad 3 · Desktop precision' },
+};
+
+function applyPreset() {
+  const key = document.getElementById('machinePreset').value;
+  if (!key || !presets[key]) { document.getElementById('presetInfoBar').style.display='none'; return; }
+  const p = presets[key];
+  document.getElementById('feedRate').value = p.feedRate;
+  document.getElementById('plungeRate').value = p.plungeRate;
+  document.getElementById('rpm').value = p.rpm;
+  document.getElementById('passDepth').value = p.passDepth;
+  if (p.bitDia) document.getElementById('bitDia').value = p.bitDia;
+  if (p.stepover) document.getElementById('stepover').value = p.stepover;
+  document.getElementById('presetInfo').textContent = p.info;
+  document.getElementById('presetInfoBar').style.display = 'block';
+  log('Preset applied: ' + key, 'info');
+}
 
 // ============================================================
 // Upload / Image Loading
@@ -1018,8 +811,7 @@ uploadZone.addEventListener('click', () => fileInput.click());
 uploadZone.addEventListener('dragover', e => { e.preventDefault(); uploadZone.classList.add('drag-over'); });
 uploadZone.addEventListener('dragleave', () => uploadZone.classList.remove('drag-over'));
 uploadZone.addEventListener('drop', e => {
-  e.preventDefault();
-  uploadZone.classList.remove('drag-over');
+  e.preventDefault(); uploadZone.classList.remove('drag-over');
   if (e.dataTransfer.files[0]) loadFile(e.dataTransfer.files[0]);
 });
 fileInput.addEventListener('change', e => { if (e.target.files[0]) loadFile(e.target.files[0]); });
@@ -1033,13 +825,13 @@ function loadFile(file) {
       state.imageLoaded = true;
       document.getElementById('placeholder').style.display = 'none';
       document.getElementById('canvasStack').style.display = 'block';
-      document.getElementById('imgInfoChip').textContent = `${img.width} × ${img.height}px`;
+      document.getElementById('imgInfoChip').textContent = img.width + ' × ' + img.height + 'px';
       if (state.aspectRatio) {
         const ratio = img.height / img.width;
         document.getElementById('stampH').value = Math.round(parseFloat(document.getElementById('stampW').value) * ratio);
       }
       drawSourceCanvas(img);
-      setView('source');   // ← always show source immediately on load
+      setView('source');
       processImage();
       document.getElementById('generateBtn').disabled = false;
       log('Image loaded: ' + img.width + '×' + img.height, 'ok');
@@ -1051,15 +843,14 @@ function loadFile(file) {
 
 function drawSourceCanvas(img) {
   const canvas = document.getElementById('sourceCanvas');
-  const maxSize = 500;
+  const maxSize = 400;
   let w = img.width, h = img.height;
   if (w > maxSize || h > maxSize) {
     if (w > h) { h = Math.round(h * maxSize / w); w = maxSize; }
     else { w = Math.round(w * maxSize / h); h = maxSize; }
   }
   canvas.width = w; canvas.height = h;
-  const ctx = canvas.getContext('2d');
-  ctx.drawImage(img, 0, 0, w, h);
+  canvas.getContext('2d').drawImage(img, 0, 0, w, h);
 }
 
 // ============================================================
@@ -1074,10 +865,7 @@ function processImage() {
     dst.width = src.width; dst.height = src.height;
     const ctx = dst.getContext('2d');
 
-    // Draw with blur
-    if (state.blur > 0) {
-      ctx.filter = `blur(${state.blur}px)`;
-    }
+    if (state.blur > 0) ctx.filter = 'blur('+state.blur+'px)';
     ctx.drawImage(src, 0, 0);
     ctx.filter = 'none';
 
@@ -1090,75 +878,48 @@ function processImage() {
         const gray = 0.299*data[i] + 0.587*data[i+1] + 0.114*data[i+2];
         const v = gray > state.threshold ? 255 : 0;
         const out = state.invert ? 255 - v : v;
-        data[i] = data[i+1] = data[i+2] = out;
-        data[i+3] = 255;
+        data[i] = data[i+1] = data[i+2] = out; data[i+3] = 255;
       }
     } else if (state.mode === 'contour') {
-      // Sobel edge detection
       const gray = new Float32Array(w * h);
-      for (let i = 0; i < data.length; i += 4) {
-        gray[i/4] = (0.299*data[i] + 0.587*data[i+1] + 0.114*data[i+2]) / 255;
-      }
-      const edge = new Float32Array(w * h);
-      let maxE = 0;
-      for (let y = 1; y < h-1; y++) {
-        for (let x = 1; x < w-1; x++) {
-          const idx = y*w+x;
-          const gx = -gray[(y-1)*w+(x-1)] + gray[(y-1)*w+(x+1)]
-                     -2*gray[y*w+(x-1)]    + 2*gray[y*w+(x+1)]
-                     -gray[(y+1)*w+(x-1)]  + gray[(y+1)*w+(x+1)];
-          const gy = -gray[(y-1)*w+(x-1)] - 2*gray[(y-1)*w+x] - gray[(y-1)*w+(x+1)]
-                     +gray[(y+1)*w+(x-1)] + 2*gray[(y+1)*w+x] + gray[(y+1)*w+(x+1)];
-          edge[idx] = Math.sqrt(gx*gx + gy*gy);
-          if (edge[idx] > maxE) maxE = edge[idx];
-        }
+      for (let i = 0; i < data.length; i += 4) gray[i/4] = (0.299*data[i]+0.587*data[i+1]+0.114*data[i+2])/255;
+      const edge = new Float32Array(w * h); let maxE = 0;
+      for (let y = 1; y < h-1; y++) for (let x = 1; x < w-1; x++) {
+        const idx = y*w+x;
+        const gx = -gray[(y-1)*w+(x-1)]+gray[(y-1)*w+(x+1)]-2*gray[y*w+(x-1)]+2*gray[y*w+(x+1)]-gray[(y+1)*w+(x-1)]+gray[(y+1)*w+(x+1)];
+        const gy = -gray[(y-1)*w+(x-1)]-2*gray[(y-1)*w+x]-gray[(y-1)*w+(x+1)]+gray[(y+1)*w+(x-1)]+2*gray[(y+1)*w+x]+gray[(y+1)*w+(x+1)];
+        edge[idx] = Math.sqrt(gx*gx+gy*gy); if (edge[idx]>maxE) maxE=edge[idx];
       }
       for (let i = 0; i < w*h; i++) {
-        const e = edge[i] / (maxE || 1);
-        const v = e > 0.15 ? 0 : 255;
-        const out = state.invert ? 255 - v : v;
-        data[i*4] = data[i*4+1] = data[i*4+2] = out;
-        data[i*4+3] = 255;
+        const v = (edge[i]/(maxE||1)) > 0.15 ? 0 : 255;
+        const out = state.invert ? 255-v : v;
+        data[i*4]=data[i*4+1]=data[i*4+2]=out; data[i*4+3]=255;
       }
     } else if (state.mode === 'halftone') {
-      // Depth map: grayscale preserved as depth info
       for (let i = 0; i < data.length; i += 4) {
-        const gray = Math.round(0.299*data[i] + 0.587*data[i+1] + 0.114*data[i+2]);
-        const out = state.invert ? 255 - gray : gray;
-        data[i] = data[i+1] = data[i+2] = out;
-        data[i+3] = 255;
+        const gray = Math.round(0.299*data[i]+0.587*data[i+1]+0.114*data[i+2]);
+        const out = state.invert ? 255-gray : gray;
+        data[i]=data[i+1]=data[i+2]=out; data[i+3]=255;
       }
     }
 
-    // Dilation (morphological)
     if (state.dilate > 0) {
-      const orig = new Uint8ClampedArray(data);
-      const r = state.dilate;
-      for (let y = 0; y < h; y++) {
-        for (let x = 0; x < w; x++) {
-          let minV = 255;
-          for (let dy = -r; dy <= r; dy++) {
-            for (let dx = -r; dx <= r; dx++) {
-              const nx = x+dx, ny = y+dy;
-              if (nx >= 0 && nx < w && ny >= 0 && ny < h) {
-                const v = orig[((ny*w)+nx)*4];
-                if (v < minV) minV = v;
-              }
-            }
-          }
-          const idx = (y*w+x)*4;
-          data[idx] = data[idx+1] = data[idx+2] = minV;
+      const orig = new Uint8ClampedArray(data); const r = state.dilate;
+      for (let y = 0; y < h; y++) for (let x = 0; x < w; x++) {
+        let minV = 255;
+        for (let dy=-r;dy<=r;dy++) for (let dx=-r;dx<=r;dx++) {
+          const nx=x+dx, ny=y+dy;
+          if (nx>=0&&nx<w&&ny>=0&&ny<h) { const v=orig[((ny*w)+nx)*4]; if(v<minV)minV=v; }
         }
+        const idx=(y*w+x)*4; data[idx]=data[idx+1]=data[idx+2]=minV;
       }
     }
 
     ctx.putImageData(imgData, 0, 0);
     state.processedData = imgData;
     hideProcessing();
-    if (state.currentView === 'processed' || state.currentView === 'toolpath') {
-      setView(state.currentView);
-    }
-    log('Image processed in ' + state.mode + ' mode', 'ok');
+    if (state.currentView==='processed'||state.currentView==='toolpath') setView(state.currentView);
+    log('Processed in '+state.mode+' mode','ok');
   }, 30);
 }
 
@@ -1167,12 +928,12 @@ function processImage() {
 // ============================================================
 function setView(view) {
   state.currentView = view;
-  ['source', 'processed', 'toolpath'].forEach(v => {
-    document.getElementById(v + 'Canvas').style.display = 'none';
-    document.getElementById('tab-' + v).classList.remove('active');
+  ['source','processed','toolpath'].forEach(v => {
+    document.getElementById(v+'Canvas').style.display = 'none';
+    document.getElementById('tab-'+v).classList.remove('active');
   });
-  document.getElementById(view + 'Canvas').style.display = state.imageLoaded ? 'block' : 'none';
-  document.getElementById('tab-' + view).classList.add('active');
+  document.getElementById(view+'Canvas').style.display = state.imageLoaded ? 'block' : 'none';
+  document.getElementById('tab-'+view).classList.add('active');
 }
 
 // ============================================================
@@ -1180,24 +941,14 @@ function setView(view) {
 // ============================================================
 function setMode(m) {
   state.mode = m;
-  ['threshold','contour','halftone'].forEach(id => {
-    document.getElementById('mode-'+id).classList.remove('active');
-  });
+  ['threshold','contour','halftone'].forEach(id => document.getElementById('mode-'+id).classList.remove('active'));
   document.getElementById('mode-'+m).classList.add('active');
   processImage();
 }
 
-function updateThreshold(v) {
-  state.threshold = parseInt(v);
-  document.getElementById('thresholdVal').textContent = v;
-  processImage();
-}
-
-function updateBlur(v) {
-  state.blur = parseInt(v);
-  document.getElementById('blurVal').textContent = v;
-  processImage();
-}
+function updateThreshold(v) { state.threshold=parseInt(v); document.getElementById('thresholdVal').textContent=v; processImage(); }
+function updateBlur(v) { state.blur=parseInt(v); document.getElementById('blurVal').textContent=v; processImage(); }
+function updateDilate(v) { state.dilate=parseInt(v); document.getElementById('dilateVal').textContent=v; processImage(); }
 
 function setInvert(v) {
   state.invert = v;
@@ -1208,12 +959,6 @@ function setInvert(v) {
   processImage();
 }
 
-function updateDilate(v) {
-  state.dilate = parseInt(v);
-  document.getElementById('dilateVal').textContent = v;
-  processImage();
-}
-
 function setAspect(v) {
   state.aspectRatio = v;
   document.getElementById('ar-yes').classList.toggle('active', v);
@@ -1221,445 +966,215 @@ function setAspect(v) {
 }
 
 function setUnits(u) {
+  const prev = state.units;
   state.units = u;
   document.getElementById('unit-mm').classList.toggle('active', u==='mm');
   document.getElementById('unit-in').classList.toggle('active', u==='in');
-  // Update unit labels in dimension inputs
-  const label = u === 'in' ? 'in' : 'mm';
+  const label = u==='in' ? 'in' : 'mm';
   document.getElementById('unitLabelW').textContent = label;
   document.getElementById('unitLabelH').textContent = label;
   document.getElementById('unitLabelD').textContent = label;
   document.getElementById('unitLabelS').textContent = label;
-  // Convert current values if needed
-  const factor = u === 'in' ? 1/25.4 : 25.4;
-  const prevUnit = u === 'in' ? 'mm' : 'in';
-  if (state.prevUnits && state.prevUnits !== u) {
+  // Convert values
+  if (prev !== u) {
+    const factor = u==='in' ? 1/25.4 : 25.4;
     ['stampW','stampH','cutDepth','stockThick'].forEach(id => {
       const el = document.getElementById(id);
-      el.value = parseFloat((parseFloat(el.value) * factor).toFixed(3));
+      el.value = parseFloat((parseFloat(el.value)*factor).toFixed(3));
     });
   }
   state.prevUnits = u;
-  log('Units set to ' + u, 'info');
-}
-
-// ============================================================
-// Material Presets & Recommendations
-// ============================================================
-const materialData = {
-  delrin: {
-    name: 'Delrin / POM',
-    info: '✓ Top recommendation for leather stamps. Delrin machines cleanly, holds extremely crisp edges, and resists wear. No coolant needed.',
-    bitRec: 'V-Bit 60° for fine lettering & detail work.\nFlat End Mill 1/8" (3.175mm) for clearing large areas.\nTwo-tool strategy: rough with flat, finish with V-bit.',
-    bitType: 'vbit',
-    settings: { feedRate: 2000, plungeRate: 500, rpm: 15000, passDepth: 1.2, bitDia: 3.175, stepover: 40 },
-    cncRec: 'Feed Rate: 2000 mm/min\nPlunge Rate: 500 mm/min\nSpindle: 15,000 RPM\nPass Depth: 1.2mm\nBit Dia: 3.175mm (1/8")\nStepover: 40%\nMQL: OFF',
-  },
-  brass: {
-    name: 'Brass',
-    info: 'Excellent durability — brass dies last for thousands of impressions. Slower cuts, fine passes, and MQL lubrication required.',
-    bitRec: 'Single-flute Carbide End Mill 1.5–2mm for fine detail.\nV-Bit 60° carbide for sharp lettering edges.\nRequires MQL (minimum quantity lubrication).',
-    bitType: 'vbit',
-    settings: { feedRate: 600, plungeRate: 150, rpm: 18000, passDepth: 0.3, bitDia: 1.5, stepover: 30 },
-    cncRec: 'Feed Rate: 600 mm/min\nPlunge Rate: 150 mm/min\nSpindle: 18,000 RPM\nPass Depth: 0.3mm (many shallow passes)\nBit Dia: 1.5mm\nStepover: 30%\nMQL: ON (required)',
-  },
-  aluminum: {
-    name: 'Aluminum 6061',
-    info: 'Good for production-run embossing dies. Harder than Delrin, softer than brass. MQL recommended. Yields very smooth surface finish.',
-    bitRec: 'Single or 2-flute Carbide End Mill 3.175mm (1/8").\nV-Bit 60° carbide for edges.\nMQL or light cutting oil recommended.',
-    bitType: 'vbit',
-    settings: { feedRate: 800, plungeRate: 200, rpm: 18000, passDepth: 0.5, bitDia: 3.175, stepover: 35 },
-    cncRec: 'Feed Rate: 800 mm/min\nPlunge Rate: 200 mm/min\nSpindle: 18,000 RPM\nPass Depth: 0.5mm\nBit Dia: 3.175mm (1/8")\nStepover: 35%\nMQL: ON (recommended)',
-  },
-  wood: {
-    name: 'Hardwood (Maple / Cherry)',
-    info: 'Good beginner option. Maple and cherry machine well and are readily available. Fine grain holds detail reasonably well. Wear over time — not as durable as Delrin or brass.',
-    bitRec: 'V-Bit 60° for lettering and fine edges.\nFlat End Mill 1/8" for background clearing.\nSharp bits only — dull bits will tear grain.',
-    bitType: 'vbit',
-    settings: { feedRate: 2500, plungeRate: 600, rpm: 18000, passDepth: 1.5, bitDia: 3.175, stepover: 40 },
-    cncRec: 'Feed Rate: 2500 mm/min\nPlunge Rate: 600 mm/min\nSpindle: 18,000 RPM\nPass Depth: 1.5mm\nBit Dia: 3.175mm (1/8")\nStepover: 40%\nMQL: OFF',
-  },
-  acrylic: {
-    name: 'Acrylic / PMMA',
-    info: 'Best for low-cost test stamps and proofing your design before cutting in Delrin or brass. Brittle — edges chip at high speeds. Slower feeds prevent melting.',
-    bitRec: 'Single-flute End Mill 3.175mm (1/8") — critical for acrylic.\nV-Bit 60° for detail (slow speed).\nAvoid multi-flute bits — they melt acrylic.',
-    bitType: 'endmill',
-    settings: { feedRate: 1800, plungeRate: 400, rpm: 16000, passDepth: 1.0, bitDia: 3.175, stepover: 35 },
-    cncRec: 'Feed Rate: 1800 mm/min\nPlunge Rate: 400 mm/min\nSpindle: 16,000 RPM\nPass Depth: 1.0mm\nBit Dia: 3.175mm (1/8")\nStepover: 35%\nMQL: OFF (use air blast)',
-  },
-};
-
-let pendingCncSettings = null;
-
-function applyMaterialPreset() {
-  const key = document.getElementById('materialSelect').value;
-  const infoBox = document.getElementById('materialInfo');
-  const bitBox = document.getElementById('bitRecommendation');
-  const cncBox = document.getElementById('cncSettingsRec');
-
-  if (!key || !materialData[key]) {
-    infoBox.style.display = 'none';
-    bitBox.style.display = 'none';
-    cncBox.style.display = 'none';
-    return;
-  }
-
-  const m = materialData[key];
-  document.getElementById('materialInfoText').innerHTML = m.info;
-  infoBox.style.display = 'block';
-
-  document.getElementById('bitRecText').innerHTML = m.bitRec.replace(/\n/g, '<br>');
-  bitBox.style.display = 'block';
-
-  document.getElementById('cncRecText').innerHTML = m.cncRec.replace(/\n/g, '<br>');
-  cncBox.style.display = 'block';
-
-  pendingCncSettings = m.settings;
-  log('Material selected: ' + m.name, 'info');
-}
-
-function applyCncRecommendation() {
-  if (!pendingCncSettings) return;
-  const s = pendingCncSettings;
-  document.getElementById('feedRate').value = s.feedRate;
-  document.getElementById('plungeRate').value = s.plungeRate;
-  document.getElementById('rpm').value = s.rpm;
-  document.getElementById('passDepth').value = s.passDepth;
-  document.getElementById('bitDia').value = s.bitDia;
-  document.getElementById('stepover').value = s.stepover;
-  // Also set the bit type dropdown
-  const key = document.getElementById('materialSelect').value;
-  if (materialData[key]) {
-    document.getElementById('bitType').value = materialData[key].bitType;
-  }
-  log('CNC settings applied from material recommendation', 'ok');
+  log('Units: '+u, 'info');
 }
 
 // ============================================================
 // Reset
 // ============================================================
 function resetTool() {
-  if (!confirm('Reset all settings and start a new design? This will clear the loaded image and all parameters.')) return;
-
-  // Reset state
-  state.imageLoaded = false;
-  state.originalImg = null;
-  state.originalCanvas = null;
-  state.processedData = null;
-  state.gcodeText = '';
-  state.mode = 'threshold';
-  state.threshold = 128;
-  state.blur = 1;
-  state.invert = false;
-  state.dilate = 0;
-  state.aspectRatio = true;
-  state.units = 'mm';
-  state.currentView = 'source';
+  if (!confirm('Reset all settings and start a new design?')) return;
+  state = { imageLoaded:false, originalImg:null, processedData:null, gcodeText:'', mode:'threshold', threshold:128, blur:1, invert:false, dilate:0, aspectRatio:true, units:'mm', prevUnits:'mm', currentView:'source' };
   pendingCncSettings = null;
-
-  // Reset UI
   document.getElementById('fileInput').value = '';
   document.getElementById('placeholder').style.display = 'block';
   document.getElementById('canvasStack').style.display = 'none';
   document.getElementById('imgInfoChip').textContent = '—';
-
-  // Reset sliders
-  document.getElementById('threshold').value = 128;
-  document.getElementById('thresholdVal').textContent = '128';
-  document.getElementById('blur').value = 1;
-  document.getElementById('blurVal').textContent = '1';
-  document.getElementById('dilate').value = 0;
-  document.getElementById('dilateVal').textContent = '0';
-
-  // Reset toggles
-  setMode('threshold');
-  setInvert(false);
-  setAspect(true);
-  setUnits('mm');
-
-  // Reset dimensions
-  document.getElementById('stampW').value = 50;
-  document.getElementById('stampH').value = 50;
-  document.getElementById('cutDepth').value = 3;
-  document.getElementById('stockThick').value = 20;
-
-  // Reset CNC settings
-  document.getElementById('feedRate').value = 1000;
-  document.getElementById('plungeRate').value = 300;
-  document.getElementById('rpm').value = 18000;
-  document.getElementById('passDepth').value = 1;
-  document.getElementById('bitDia').value = 3.175;
-  document.getElementById('stepover').value = 40;
-  document.getElementById('bitType').value = 'endmill';
-  document.getElementById('strategy').value = 'raster';
-
-  // Reset material selection
-  document.getElementById('materialSelect').value = '';
-  document.getElementById('materialInfo').style.display = 'none';
-  document.getElementById('bitRecommendation').style.display = 'none';
-  document.getElementById('cncSettingsRec').style.display = 'none';
-
-  // Reset buttons & outputs
-  document.getElementById('generateBtn').disabled = true;
-  document.getElementById('downloadBtn').disabled = true;
-  document.getElementById('downloadSvgBtn').disabled = true;
-  document.getElementById('gcodeDisplay').innerHTML = '<span style="color:var(--text-dim);font-size:14px;">// Generate G-code to preview...</span>';
-  ['statTime','statLines','statPasses','statSize','statW','statH'].forEach(id => {
-    document.getElementById(id).textContent = '—';
-  });
-  document.getElementById('progressBar').style.width = '0%';
-  document.getElementById('machinePreset').value = '';
-  document.getElementById('presetInfo').textContent = 'Select a machine preset to auto-configure feed rates and limits.';
-  document.getElementById('logArea').innerHTML = '';
-
-  // Clear canvases
+  document.getElementById('threshold').value = 128; document.getElementById('thresholdVal').textContent = '128';
+  document.getElementById('blur').value = 1; document.getElementById('blurVal').textContent = '1';
+  document.getElementById('dilate').value = 0; document.getElementById('dilateVal').textContent = '0';
+  document.getElementById('stampW').value=50; document.getElementById('stampH').value=50;
+  document.getElementById('cutDepth').value=3; document.getElementById('stockThick').value=20;
+  document.getElementById('feedRate').value=1000; document.getElementById('plungeRate').value=300;
+  document.getElementById('rpm').value=18000; document.getElementById('passDepth').value=1;
+  document.getElementById('bitDia').value=3.175; document.getElementById('stepover').value=40;
+  document.getElementById('bitType').value='endmill'; document.getElementById('strategy').value='raster';
+  document.getElementById('materialSelect').value=''; document.getElementById('materialInfoArea').style.display='none';
+  document.getElementById('machinePreset').value=''; document.getElementById('presetInfoBar').style.display='none';
+  document.getElementById('generateBtn').disabled=true;
+  document.getElementById('downloadBtn').disabled=true;
+  document.getElementById('downloadSvgBtn').disabled=true;
+  document.getElementById('gcodeDisplay').innerHTML='<span style="color:var(--text-dim)">// Generate G-code to preview...</span>';
+  ['statTime','statLines','statPasses','statSize','statW','statH'].forEach(id => document.getElementById(id).innerHTML='—');
+  document.getElementById('progressBar').style.width='0%';
+  document.getElementById('logArea').innerHTML='';
+  setInvert(false); setAspect(true); setUnits('mm');
   ['sourceCanvas','processedCanvas','toolpathCanvas'].forEach(id => {
-    const c = document.getElementById(id);
-    c.getContext('2d').clearRect(0,0,c.width,c.height);
-    c.style.display = 'none';
+    const c=document.getElementById(id); c.getContext('2d').clearRect(0,0,c.width,c.height); c.style.display='none';
   });
-
-  log('Tool reset — ready for new design', 'ok');
-}
-
-// ============================================================
-// Machine presets
-// ============================================================
-function applyPreset() {
-  const key = document.getElementById('machinePreset').value;
-  if (!key || !presets[key]) return;
-  const p = presets[key];
-  document.getElementById('feedRate').value = p.feedRate;
-  document.getElementById('plungeRate').value = p.plungeRate;
-  document.getElementById('rpm').value = p.rpm;
-  document.getElementById('passDepth').value = p.passDepth;
-  if (p.bitDia) document.getElementById('bitDia').value = p.bitDia;
-  if (p.stepover) document.getElementById('stepover').value = p.stepover;
-  document.getElementById('presetInfo').textContent = p.info;
-  log('Preset applied: ' + key, 'info');
+  ['mode-threshold','mode-contour','mode-halftone'].forEach(id => document.getElementById(id).classList.remove('active'));
+  document.getElementById('mode-threshold').classList.add('active');
+  ['unitLabelW','unitLabelH','unitLabelD','unitLabelS'].forEach(id => document.getElementById(id).textContent='mm');
+  log('Reset — ready for new design', 'ok');
 }
 
 // ============================================================
 // G-Code Generation
 // ============================================================
 function generateGcode() {
-  if (!state.imageLoaded || !state.processedData) { log('Load an image first', 'warn'); return; }
-
+  if (!state.imageLoaded || !state.processedData) { log('Load an image first','warn'); return; }
   showProcessing('GENERATING TOOLPATH...');
   setTimeout(() => {
     try {
       const gcode = buildGcode();
       state.gcodeText = gcode;
-
-      // Render toolpath visualization
       renderToolpathPreview(gcode);
 
-      // Stats
       const lines = gcode.split('\n').length;
       const bytes = new Blob([gcode]).size;
       document.getElementById('statLines').textContent = lines.toLocaleString();
-      document.getElementById('statSize').textContent = (bytes / 1024).toFixed(1) + '<span class="stat-unit">KB</span>';
-      document.getElementById('statW').textContent = document.getElementById('stampW').value + '<span class="stat-unit">mm</span>';
-      document.getElementById('statH').textContent = document.getElementById('stampH').value + '<span class="stat-unit">mm</span>';
+      document.getElementById('statSize').textContent = (bytes/1024).toFixed(1)+'<span class="stat-unit">KB</span>';
+      document.getElementById('statW').textContent = document.getElementById('stampW').value+'<span class="stat-unit">'+state.units+'</span>';
+      document.getElementById('statH').textContent = document.getElementById('stampH').value+'<span class="stat-unit">'+state.units+'</span>';
 
-      const passes = Math.ceil(parseFloat(document.getElementById('cutDepth').value) / parseFloat(document.getElementById('passDepth').value));
+      const passes = Math.ceil(parseFloat(document.getElementById('cutDepth').value)/parseFloat(document.getElementById('passDepth').value));
       document.getElementById('statPasses').textContent = passes;
 
-      // Estimate time (very rough)
-      const feedRate = parseFloat(document.getElementById('feedRate').value);
-      const stampW = parseFloat(document.getElementById('stampW').value);
-      const stampH = parseFloat(document.getElementById('stampH').value);
-      const stepover = parseFloat(document.getElementById('stepover').value) / 100;
-      const bitDia = parseFloat(document.getElementById('bitDia').value);
-      const totalLength = (stampW / (bitDia * stepover)) * stampH * passes;
-      const minutes = totalLength / feedRate;
-      const h = Math.floor(minutes / 60);
-      const m = Math.round(minutes % 60);
-      document.getElementById('statTime').textContent = (h > 0 ? h + 'h ' : '') + m + '<span class="stat-unit">min</span>';
+      const feedRate=parseFloat(document.getElementById('feedRate').value);
+      const stampW=parseFloat(document.getElementById('stampW').value);
+      const stampH=parseFloat(document.getElementById('stampH').value);
+      const stepover=parseFloat(document.getElementById('stepover').value)/100;
+      const bitDia=parseFloat(document.getElementById('bitDia').value);
+      const totalLength=(stampW/(bitDia*stepover))*stampH*passes;
+      const minutes=totalLength/feedRate;
+      const h=Math.floor(minutes/60), m=Math.round(minutes%60);
+      document.getElementById('statTime').textContent = (h>0?h+'h ':'') + m + '<span class="stat-unit">min</span>';
 
-      // Display gcode
       renderGcodePreview(gcode);
-
       document.getElementById('downloadBtn').disabled = false;
       document.getElementById('downloadSvgBtn').disabled = false;
       setView('toolpath');
-
-      log('G-code generated: ' + lines + ' lines', 'ok');
-    } catch(e) {
-      log('Error: ' + e.message, 'warn');
-    }
+      log('G-code generated: '+lines+' lines','ok');
+    } catch(e) { log('Error: '+e.message,'warn'); }
     hideProcessing();
   }, 60);
 }
 
 function buildGcode() {
-  const stampW  = parseFloat(document.getElementById('stampW').value);
-  const stampH  = parseFloat(document.getElementById('stampH').value);
-  const cutDepth = parseFloat(document.getElementById('cutDepth').value);
-  const stockThick = parseFloat(document.getElementById('stockThick').value);
-  const bitDia  = parseFloat(document.getElementById('bitDia').value);
-  const stepoverPct = parseFloat(document.getElementById('stepover').value) / 100;
-  const feedRate = parseFloat(document.getElementById('feedRate').value);
-  const plungeRate = parseFloat(document.getElementById('plungeRate').value);
-  const rpm = parseInt(document.getElementById('rpm').value);
-  const passDepth = parseFloat(document.getElementById('passDepth').value);
-  const strategy = document.getElementById('strategy').value;
-  const bitType = document.getElementById('bitType').value;
-  const useInches = state.units === 'in';
-  const conv = useInches ? 1/25.4 : 1;
-  const safeZ = 5 * conv;
-  const stepover = bitDia * stepoverPct * conv;
+  const stampW=parseFloat(document.getElementById('stampW').value);
+  const stampH=parseFloat(document.getElementById('stampH').value);
+  const cutDepth=parseFloat(document.getElementById('cutDepth').value);
+  const stockThick=parseFloat(document.getElementById('stockThick').value);
+  const bitDia=parseFloat(document.getElementById('bitDia').value);
+  const stepoverPct=parseFloat(document.getElementById('stepover').value)/100;
+  const feedRate=parseFloat(document.getElementById('feedRate').value);
+  const plungeRate=parseFloat(document.getElementById('plungeRate').value);
+  const rpm=parseInt(document.getElementById('rpm').value);
+  const passDepth=parseFloat(document.getElementById('passDepth').value);
+  const strategy=document.getElementById('strategy').value;
+  const bitType=document.getElementById('bitType').value;
+  const useInches=state.units==='in';
+  const conv=useInches?1/25.4:1;
+  const safeZ=5*conv;
+  const stepover=bitDia*stepoverPct*conv;
+  const imgData=state.processedData;
+  const iw=imgData.width, ih=imgData.height;
 
-  const imgData = state.processedData;
-  const iw = imgData.width, ih = imgData.height;
-
-  // Sample pixel at (u,v) ∈ [0,1] → returns brightness 0..1
-  function samplePixel(u, v) {
-    const px = Math.min(iw-1, Math.max(0, Math.round(u * (iw-1))));
-    const py = Math.min(ih-1, Math.max(0, Math.round(v * (ih-1))));
-    return imgData.data[(py*iw+px)*4] / 255;
+  function samplePixel(u,v){
+    const px=Math.min(iw-1,Math.max(0,Math.round(u*(iw-1))));
+    const py=Math.min(ih-1,Math.max(0,Math.round(v*(ih-1))));
+    return imgData.data[(py*iw+px)*4]/255;
   }
 
-  const lines = [];
-  const f = v => (v * conv).toFixed(4);
-  const fr = v => Math.round(v * conv);
-  const passes = Math.ceil(cutDepth / passDepth);
+  const lines=[];
+  const f=v=>(v*conv).toFixed(4);
+  const fr=v=>Math.round(v*conv);
+  const passes=Math.ceil(cutDepth/passDepth);
 
-  // Header
-  lines.push('; ============================================');
   lines.push('; StampForge CNC Leather Stamp G-Code');
-  lines.push('; Generated: ' + new Date().toISOString());
-  lines.push('; Stamp size: ' + stampW + 'x' + stampH + 'mm');
-  lines.push('; Cut depth: ' + cutDepth + 'mm in ' + passes + ' passes');
-  lines.push('; Bit: ' + bitDia + 'mm ' + bitType);
-  lines.push('; Feed: ' + feedRate + ' mm/min  Plunge: ' + plungeRate + ' mm/min');
-  lines.push('; Strategy: ' + strategy);
-  lines.push('; Mode: ' + state.mode + (state.invert ? ' (inverted)' : ''));
-  lines.push('; ============================================');
+  lines.push('; Generated: '+new Date().toISOString());
+  lines.push('; Stamp: '+stampW+'x'+stampH+(useInches?' in':' mm')+' Depth: '+cutDepth+' Passes: '+passes);
+  lines.push('; Bit: '+bitDia+'mm '+bitType+' Feed: '+feedRate+' Plunge: '+plungeRate);
+  lines.push('; Strategy: '+strategy+' Mode: '+state.mode+(state.invert?' (inverted)':''));
+  lines.push('');
+  lines.push(useInches?'G20 ; Inches':'G21 ; Millimeters');
+  lines.push('G90 ; Absolute'); lines.push('G17 ; XY plane'); lines.push('G94 ; Feed/min');
+  lines.push(''); lines.push('M3 S'+rpm+' ; Spindle ON'); lines.push('G4 P2 ; Spin-up dwell');
+  lines.push(''); lines.push('G0 Z'+f(safeZ)+' ; Safe height'); lines.push('G0 X0 Y0');
   lines.push('');
 
-  if (useInches) lines.push('G20 ; Inches');
-  else           lines.push('G21 ; Millimeters');
+  if (strategy==='raster'||strategy==='both') { lines.push('; --- RASTER X ---'); generateRaster('x',lines,passes,stampW,stampH,stepover,cutDepth,passDepth,safeZ,feedRate,plungeRate,f,fr,samplePixel,conv,state.mode); }
+  if (strategy==='raster_y'||strategy==='both') { lines.push(''); lines.push('; --- RASTER Y ---'); generateRaster('y',lines,passes,stampW,stampH,stepover,cutDepth,passDepth,safeZ,feedRate,plungeRate,f,fr,samplePixel,conv,state.mode); }
+  if (strategy==='contour') { lines.push('; --- CONTOUR ---'); generateContour(lines,passes,stampW,stampH,stepover,cutDepth,passDepth,safeZ,feedRate,plungeRate,f,fr,samplePixel,conv); }
 
-  lines.push('G90 ; Absolute positioning');
-  lines.push('G17 ; XY plane');
-  lines.push('G94 ; Feed per minute');
-  lines.push('');
-  lines.push('M3 S' + rpm + ' ; Spindle ON');
-  lines.push('G4 P2 ; Dwell 2s for spindle spin-up');
-  lines.push('');
-  lines.push('G0 Z' + f(safeZ) + ' ; Safe height');
-  lines.push('G0 X0 Y0 ; Move to origin');
-  lines.push('');
-
-  // Toolpath generation
-  if (strategy === 'raster' || strategy === 'both') {
-    lines.push('; --- RASTER X-AXIS PASSES ---');
-    generateRaster('x', lines, passes, stampW, stampH, stepover, cutDepth, passDepth, safeZ, feedRate, plungeRate, f, fr, samplePixel, conv, state.mode);
-  }
-
-  if (strategy === 'raster_y' || strategy === 'both') {
-    lines.push('');
-    lines.push('; --- RASTER Y-AXIS PASSES ---');
-    generateRaster('y', lines, passes, stampW, stampH, stepover, cutDepth, passDepth, safeZ, feedRate, plungeRate, f, fr, samplePixel, conv, state.mode);
-  }
-
-  if (strategy === 'contour') {
-    lines.push('; --- CONTOUR PASSES ---');
-    generateContour(lines, passes, stampW, stampH, stepover, cutDepth, passDepth, safeZ, feedRate, plungeRate, f, fr, samplePixel, conv);
-  }
-
-  lines.push('');
-  lines.push('; --- FINISH ---');
-  lines.push('G0 Z' + f(safeZ) + ' ; Retract');
-  lines.push('G0 X0 Y0 ; Return to origin');
-  lines.push('M5 ; Spindle OFF');
-  lines.push('M30 ; Program end');
-
+  lines.push(''); lines.push('; --- FINISH ---');
+  lines.push('G0 Z'+f(safeZ)+' ; Retract'); lines.push('G0 X0 Y0'); lines.push('M5 ; Spindle OFF'); lines.push('M30');
   return lines.join('\n');
 }
 
-function generateRaster(axis, lines, passes, stampW, stampH, stepover, cutDepth, passDepth, safeZ, feedRate, plungeRate, f, fr, samplePixel, conv, mode) {
-  for (let pass = 1; pass <= passes; pass++) {
-    const z = -Math.min(pass * passDepth, cutDepth) * conv;
-    lines.push('; Pass ' + pass + '/' + passes + ' Z=' + z.toFixed(4));
-
-    const primary = axis === 'x' ? stampW : stampH;
-    const secondary = axis === 'x' ? stampH : stampW;
-    const steps = Math.ceil(secondary / (stepover / conv)) + 1;
-
-    for (let i = 0; i <= steps; i++) {
-      const t = i / steps;
-      const secondaryPos = t * secondary * conv;
-      const goForward = (i % 2 === 0);
-
-      // Sample along primary axis at several points to determine if we need to cut
-      const segments = [];
-      const resolution = Math.ceil(primary * conv / (conv * 0.5));
-      for (let j = 0; j <= resolution; j++) {
-        const u_t = j / resolution;
-        const u = axis === 'x' ? u_t : t;
-        const v = axis === 'x' ? t : u_t;
-        const brightness = samplePixel(u, 1-v);
-        const shouldCut = brightness < 0.5;
-        const pos = (goForward ? u_t : 1-u_t) * primary * conv;
-        segments.push({ pos, shouldCut });
+function generateRaster(axis,lines,passes,stampW,stampH,stepover,cutDepth,passDepth,safeZ,feedRate,plungeRate,f,fr,samplePixel,conv,mode){
+  for(let pass=1;pass<=passes;pass++){
+    const z=-Math.min(pass*passDepth,cutDepth)*conv;
+    lines.push('; Pass '+pass+'/'+passes+' Z='+z.toFixed(4));
+    const primary=axis==='x'?stampW:stampH;
+    const secondary=axis==='x'?stampH:stampW;
+    const steps=Math.ceil(secondary/(stepover/conv))+1;
+    for(let i=0;i<=steps;i++){
+      const t=i/steps;
+      const secondaryPos=t*secondary*conv;
+      const goForward=(i%2===0);
+      const segments=[];
+      const resolution=Math.ceil(primary*conv/(conv*0.5));
+      for(let j=0;j<=resolution;j++){
+        const u_t=j/resolution;
+        const u=axis==='x'?u_t:t;
+        const v=axis==='x'?t:u_t;
+        const brightness=samplePixel(u,1-v);
+        const shouldCut=brightness<0.5;
+        const pos=(goForward?u_t:1-u_t)*primary*conv;
+        segments.push({pos,shouldCut});
       }
-
-      // Build moves — lift over white areas
-      let inCut = false;
-      for (let j = 0; j < segments.length; j++) {
-        const seg = segments[j];
-        const x = axis === 'x' ? seg.pos : secondaryPos;
-        const y = axis === 'x' ? secondaryPos : seg.pos;
-
-        if (seg.shouldCut && !inCut) {
-          // Plunge
-          if (j > 0) {
-            lines.push('G0 Z' + f(safeZ));
-          }
-          lines.push('G0 X' + f(x) + ' Y' + f(y));
-          lines.push('G1 Z' + z.toFixed(4) + ' F' + fr(plungeRate));
-          inCut = true;
-        } else if (seg.shouldCut && inCut) {
-          lines.push('G1 X' + f(x) + ' Y' + f(y) + ' F' + fr(feedRate));
-        } else if (!seg.shouldCut && inCut) {
-          lines.push('G0 Z' + f(safeZ));
-          inCut = false;
-        }
+      let inCut=false;
+      for(let j=0;j<segments.length;j++){
+        const seg=segments[j];
+        const x=axis==='x'?seg.pos:secondaryPos;
+        const y=axis==='x'?secondaryPos:seg.pos;
+        if(seg.shouldCut&&!inCut){ if(j>0)lines.push('G0 Z'+f(safeZ)); lines.push('G0 X'+f(x)+' Y'+f(y)); lines.push('G1 Z'+z.toFixed(4)+' F'+fr(plungeRate)); inCut=true; }
+        else if(seg.shouldCut&&inCut){ lines.push('G1 X'+f(x)+' Y'+f(y)+' F'+fr(feedRate)); }
+        else if(!seg.shouldCut&&inCut){ lines.push('G0 Z'+f(safeZ)); inCut=false; }
       }
-      if (inCut) lines.push('G0 Z' + f(safeZ));
+      if(inCut) lines.push('G0 Z'+f(safeZ));
     }
   }
 }
 
-function generateContour(lines, passes, stampW, stampH, stepover, cutDepth, passDepth, safeZ, feedRate, plungeRate, f, fr, samplePixel, conv) {
-  // March along perimeter of black regions
-  for (let pass = 1; pass <= passes; pass++) {
-    const z = -Math.min(pass * passDepth, cutDepth) * conv;
-    lines.push('; Contour pass ' + pass + '/' + passes);
-    const steps = 200;
-    lines.push('G0 Z' + f(safeZ));
-    for (let j = 0; j <= steps; j++) {
-      const t = j / steps;
-      const x = t * stampW * conv;
-      const u = t;
-      for (let yi = 0; yi <= steps; yi++) {
-        const tv = yi / steps;
-        const brightness = samplePixel(u, tv);
-        if (brightness < 0.5) {
-          const y = tv * stampH * conv;
-          if (j === 0 && yi === 0) {
-            lines.push('G0 X' + f(x) + ' Y' + f(y));
-            lines.push('G1 Z' + z.toFixed(4) + ' F' + fr(plungeRate));
-          } else {
-            lines.push('G1 X' + f(x) + ' Y' + f(y) + ' F' + fr(feedRate));
-          }
+function generateContour(lines,passes,stampW,stampH,stepover,cutDepth,passDepth,safeZ,feedRate,plungeRate,f,fr,samplePixel,conv){
+  for(let pass=1;pass<=passes;pass++){
+    const z=-Math.min(pass*passDepth,cutDepth)*conv;
+    lines.push('; Contour pass '+pass+'/'+passes);
+    const steps=200;
+    lines.push('G0 Z'+f(safeZ));
+    for(let j=0;j<=steps;j++){
+      const t=j/steps; const x=t*stampW*conv; const u=t;
+      for(let yi=0;yi<=steps;yi++){
+        const tv=yi/steps; const brightness=samplePixel(u,tv);
+        if(brightness<0.5){
+          const y=tv*stampH*conv;
+          if(j===0&&yi===0){ lines.push('G0 X'+f(x)+' Y'+f(y)); lines.push('G1 Z'+z.toFixed(4)+' F'+fr(plungeRate)); }
+          else{ lines.push('G1 X'+f(x)+' Y'+f(y)+' F'+fr(feedRate)); }
           break;
         }
       }
     }
-    lines.push('G0 Z' + f(safeZ));
+    lines.push('G0 Z'+f(safeZ));
   }
 }
 
@@ -1667,177 +1182,103 @@ function generateContour(lines, passes, stampW, stampH, stepover, cutDepth, pass
 // Toolpath Visualization
 // ============================================================
 function renderToolpathPreview(gcode) {
-  const src = document.getElementById('processedCanvas');
-  const canvas = document.getElementById('toolpathCanvas');
-  canvas.width = src.width; canvas.height = src.height;
-  const ctx = canvas.getContext('2d');
-
-  // Background: dim processed image
-  ctx.drawImage(src, 0, 0);
-  ctx.fillStyle = 'rgba(15,13,11,0.7)';
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-  // Parse moves
-  const lines = gcode.split('\n');
-  let cx = 0, cy = 0, cz = 5;
-  let drawing = false;
-
-  const w = parseFloat(document.getElementById('stampW').value);
-  const h = parseFloat(document.getElementById('stampH').value);
-
-  ctx.lineWidth = 1;
-  ctx.beginPath();
-
-  for (const line of lines) {
-    const trim = line.trim().split(';')[0];
-    if (!trim) continue;
-
-    const xm = trim.match(/X([-\d.]+)/);
-    const ym = trim.match(/Y([-\d.]+)/);
-    const zm = trim.match(/Z([-\d.]+)/);
-
-    if (zm) cz = parseFloat(zm[1]);
-    const nx = xm ? parseFloat(xm[1]) : cx;
-    const ny = ym ? parseFloat(ym[1]) : cy;
-
-    const px = (nx / w) * canvas.width;
-    const py = canvas.height - (ny / h) * canvas.height;
-
-    if (trim.startsWith('G0')) {
-      ctx.stroke();
-      ctx.beginPath();
-      ctx.strokeStyle = cz > 0 ? 'rgba(93,173,226,0.3)' : 'rgba(212,134,10,0.8)';
-      ctx.moveTo(px, py);
-      drawing = false;
-    } else if (trim.startsWith('G1')) {
-      if (!drawing) {
-        ctx.beginPath();
-        ctx.moveTo((cx/w)*canvas.width, canvas.height-(cy/h)*canvas.height);
-        drawing = true;
-      }
-      ctx.strokeStyle = cz < 0 ? 'rgba(245,166,35,0.9)' : 'rgba(93,173,226,0.4)';
-      ctx.lineTo(px, py);
-      ctx.stroke();
-      ctx.beginPath();
-      ctx.moveTo(px, py);
-    }
-    cx = nx; cy = ny;
+  const src=document.getElementById('processedCanvas');
+  const canvas=document.getElementById('toolpathCanvas');
+  canvas.width=src.width; canvas.height=src.height;
+  const ctx=canvas.getContext('2d');
+  ctx.drawImage(src,0,0);
+  ctx.fillStyle='rgba(15,13,11,0.7)'; ctx.fillRect(0,0,canvas.width,canvas.height);
+  const gcLines=gcode.split('\n');
+  let cx=0,cy=0,cz=5,drawing=false;
+  const w=parseFloat(document.getElementById('stampW').value);
+  const h=parseFloat(document.getElementById('stampH').value);
+  ctx.lineWidth=1; ctx.beginPath();
+  for(const line of gcLines){
+    const trim=line.trim().split(';')[0]; if(!trim) continue;
+    const xm=trim.match(/X([-\d.]+)/), ym=trim.match(/Y([-\d.]+)/), zm=trim.match(/Z([-\d.]+)/);
+    if(zm) cz=parseFloat(zm[1]);
+    const nx=xm?parseFloat(xm[1]):cx, ny=ym?parseFloat(ym[1]):cy;
+    const px=(nx/w)*canvas.width, py=canvas.height-(ny/h)*canvas.height;
+    if(trim.startsWith('G0')){ ctx.stroke(); ctx.beginPath(); ctx.strokeStyle=cz>0?'rgba(93,173,226,0.3)':'rgba(212,134,10,0.8)'; ctx.moveTo(px,py); drawing=false; }
+    else if(trim.startsWith('G1')){ if(!drawing){ ctx.beginPath(); ctx.moveTo((cx/w)*canvas.width,canvas.height-(cy/h)*canvas.height); drawing=true; } ctx.strokeStyle=cz<0?'rgba(245,166,35,0.9)':'rgba(93,173,226,0.4)'; ctx.lineTo(px,py); ctx.stroke(); ctx.beginPath(); ctx.moveTo(px,py); }
+    cx=nx; cy=ny;
   }
   ctx.stroke();
 }
 
-// ============================================================
-// G-Code Display Renderer
-// ============================================================
 function renderGcodePreview(gcode) {
-  const el = document.getElementById('gcodeDisplay');
-  const lines = gcode.split('\n').slice(0, 200);
-  el.innerHTML = lines.map(line => {
-    const l = line.trim();
-    if (l.startsWith(';')) return `<div class="g-comment">${l}</div>`;
-    if (l.startsWith('G0')) return `<div class="g-rapid">${l}</div>`;
-    if (l.startsWith('G1')) return `<div class="g-move">${l}</div>`;
-    if (l.startsWith('M3') || l.startsWith('M5')) return `<div class="g-spindle">${l}</div>`;
-    if (l.startsWith('F')) return `<div class="g-feed">${l}</div>`;
-    return `<div style="color:var(--steel)">${l}</div>`;
-  }).join('') + (gcode.split('\n').length > 200 ? '<div class="g-comment">... (' + (gcode.split('\n').length - 200) + ' more lines)</div>' : '');
+  const el=document.getElementById('gcodeDisplay');
+  const lines=gcode.split('\n').slice(0,200);
+  el.innerHTML=lines.map(line=>{
+    const l=line.trim();
+    if(l.startsWith(';')) return '<div class="g-comment">'+l+'</div>';
+    if(l.startsWith('G0')) return '<div class="g-rapid">'+l+'</div>';
+    if(l.startsWith('G1')) return '<div class="g-move">'+l+'</div>';
+    if(l.startsWith('M3')||l.startsWith('M5')) return '<div class="g-spindle">'+l+'</div>';
+    if(l.startsWith('F')) return '<div class="g-feed">'+l+'</div>';
+    return '<div style="color:var(--steel)">'+l+'</div>';
+  }).join('')+(gcode.split('\n').length>200?'<div class="g-comment">... ('+(gcode.split('\n').length-200)+' more)</div>':'');
 }
 
 // ============================================================
 // Download
 // ============================================================
 function downloadGcode() {
-  if (!state.gcodeText) return;
-  const blob = new Blob([state.gcodeText], { type: 'text/plain' });
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(blob);
-  a.download = 'stamp_' + Date.now() + '.nc';
-  a.click();
-  log('Downloaded G-code file', 'ok');
+  if(!state.gcodeText) return;
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(new Blob([state.gcodeText],{type:'text/plain'}));
+  a.download='stamp_'+Date.now()+'.nc'; a.click();
+  log('Downloaded G-code file','ok');
 }
 
 function downloadSVG() {
-  if (!state.processedData) return;
-  const imgData = state.processedData;
-  const w = imgData.width, h = imgData.height;
-  const stampW = parseFloat(document.getElementById('stampW').value);
-  const stampH = parseFloat(document.getElementById('stampH').value);
-
-  let paths = '';
-  // Simple pixel-to-SVG rect export for black pixels
-  const scale = 1; // 1px = 1 unit
-  for (let y = 0; y < h; y += 2) {
-    let inBlack = false, startX = 0;
-    for (let x = 0; x <= w; x++) {
-      const isBlack = x < w && imgData.data[(y*w+x)*4] < 128;
-      if (isBlack && !inBlack) { startX = x; inBlack = true; }
-      else if (!isBlack && inBlack) {
-        paths += `<rect x="${startX}" y="${y}" width="${x-startX}" height="2" fill="black"/>`;
-        inBlack = false;
-      }
+  if(!state.processedData) return;
+  const imgData=state.processedData;
+  const w=imgData.width, h=imgData.height;
+  const stampW=parseFloat(document.getElementById('stampW').value);
+  const stampH=parseFloat(document.getElementById('stampH').value);
+  let paths='';
+  for(let y=0;y<h;y+=2){ let inBlack=false,startX=0;
+    for(let x=0;x<=w;x++){
+      const isBlack=x<w&&imgData.data[(y*w+x)*4]<128;
+      if(isBlack&&!inBlack){startX=x;inBlack=true;}
+      else if(!isBlack&&inBlack){paths+='<rect x="'+startX+'" y="'+y+'" width="'+(x-startX)+'" height="2" fill="black"/>';inBlack=false;}
     }
   }
-
-  const svg = `<?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" width="${stampW}mm" height="${stampH}mm" viewBox="0 0 ${w} ${h}">
-  <title>StampForge Processed Image — ${stampW}x${stampH}mm</title>
-  <rect width="${w}" height="${h}" fill="white"/>
-  ${paths}
-</svg>`;
-
-  const blob = new Blob([svg], { type: 'image/svg+xml' });
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(blob);
-  a.download = 'stamp_preview_' + Date.now() + '.svg';
-  a.click();
-  log('Downloaded SVG preview', 'ok');
+  const svg='<?xml version="1.0"?>\n<svg xmlns="http://www.w3.org/2000/svg" width="'+stampW+'mm" height="'+stampH+'mm" viewBox="0 0 '+w+' '+h+'"><rect width="'+w+'" height="'+h+'" fill="white"/>'+paths+'</svg>';
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(new Blob([svg],{type:'image/svg+xml'}));
+  a.download='stamp_'+Date.now()+'.svg'; a.click();
+  log('Downloaded SVG preview','ok');
 }
 
 // ============================================================
 // UI Helpers
 // ============================================================
-function showProcessing(label) {
-  const ov = document.getElementById('processingOverlay');
-  document.getElementById('procLabel').textContent = label;
-  ov.classList.add('active');
-  setProgress(0);
-}
+function showProcessing(label) { document.getElementById('procLabel').textContent=label; document.getElementById('processingOverlay').classList.add('active'); setProgress(0); }
+function hideProcessing() { document.getElementById('processingOverlay').classList.remove('active'); setProgress(100); }
+function setProgress(p) { document.getElementById('progressBar').style.width=p+'%'; }
 
-function hideProcessing() {
-  document.getElementById('processingOverlay').classList.remove('active');
-  setProgress(100);
-}
-
-function setProgress(p) {
-  document.getElementById('progressBar').style.width = p + '%';
-}
-
-let logCount = 0;
-function log(msg, type='info') {
+let logCount=0;
+function log(msg,type='info'){
   logCount++;
-  const area = document.getElementById('logArea');
-  const div = document.createElement('div');
-  div.className = 'log-line ' + type;
-  div.textContent = msg;
-  area.appendChild(div);
-  area.scrollTop = area.scrollHeight;
-  if (logCount > 20) area.firstChild?.remove();
+  const area=document.getElementById('logArea');
+  const div=document.createElement('div');
+  div.className='log-line '+type; div.textContent=msg;
+  area.appendChild(div); area.scrollTop=area.scrollHeight;
+  if(logCount>20) area.firstChild?.remove();
 }
 
 // stat values with innerHTML
 ['statTime','statLines','statPasses','statSize','statW','statH'].forEach(id => {
-  const el = document.getElementById(id);
-  const orig = el.innerHTML;
-  Object.defineProperty(el, 'textContent', {
-    set(v) { this.innerHTML = v; }
-  });
+  const el=document.getElementById(id);
+  Object.defineProperty(el,'textContent',{set(v){this.innerHTML=v;}});
 });
 
-// Auto-process on param changes
-document.getElementById('stampW').addEventListener('change', () => {
-  if (state.aspectRatio && state.originalImg) {
-    const ratio = state.originalImg.height / state.originalImg.width;
-    document.getElementById('stampH').value = Math.round(parseFloat(document.getElementById('stampW').value) * ratio);
+document.getElementById('stampW').addEventListener('change',()=>{
+  if(state.aspectRatio&&state.originalImg){
+    const ratio=state.originalImg.height/state.originalImg.width;
+    document.getElementById('stampH').value=Math.round(parseFloat(document.getElementById('stampW').value)*ratio);
   }
 });
 </script>
