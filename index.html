@@ -248,7 +248,7 @@
     top: 50%;
     transform: translateY(-50%);
     font-family: var(--font-mono);
-    font-size: 11px;
+    font-size: 13px;
     color: var(--text-dim);
     pointer-events: none;
   }
@@ -339,7 +339,7 @@
   .panel-center {
     display: flex;
     flex-direction: column;
-    background: var(--bg);
+    background: var(--surface);
     position: relative;
     overflow: hidden;
   }
@@ -391,7 +391,8 @@
     justify-content: center;
     position: relative;
     overflow: hidden;
-    padding: 20px;
+    padding: 12px;
+    background: var(--surface);
   }
 
   .canvas-placeholder {
@@ -414,11 +415,14 @@
 
   canvas {
     max-width: 100%;
-    max-height: 100%;
+    max-height: calc(100vh - 130px);
+    width: auto;
+    height: auto;
     image-rendering: pixelated;
     border: 1px solid var(--border);
-    box-shadow: 0 0 40px rgba(0,0,0,0.5);
+    box-shadow: 0 0 24px rgba(0,0,0,0.4);
     display: none;
+    object-fit: contain;
   }
 
   canvas.visible { display: block; }
@@ -426,6 +430,11 @@
   /* Toolpath canvas overlay */
   .canvas-stack {
     position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
   }
 
   /* RIGHT PANEL */
@@ -487,7 +496,7 @@
   }
 
   .stat-unit {
-    font-size: 11px;
+    font-size: 13px;
     color: var(--text-dim);
     margin-left: 3px;
   }
@@ -549,7 +558,7 @@
     border: 1px solid var(--border);
     border-radius: 20px;
     font-family: var(--font-mono);
-    font-size: 10px;
+    font-size: 13px;
     color: var(--text-dim);
     letter-spacing: 1px;
   }
@@ -624,19 +633,19 @@
         </select>
       </div>
 
-      <div id="materialInfo" style="display:none;font-family:var(--font-mono);font-size:12px;line-height:1.7;padding:10px;background:var(--bg);border:1px solid var(--border);border-radius:3px;margin-top:6px">
+      <div id="materialInfo" style="display:none;font-family:var(--font-mono);font-size:14px;line-height:1.7;padding:10px;background:var(--bg);border:1px solid var(--border);border-radius:3px;margin-top:6px">
         <div id="materialInfoText"></div>
       </div>
 
-      <div id="bitRecommendation" style="display:none;margin-top:10px;padding:10px;background:rgba(212,134,10,0.08);border:1px solid var(--amber-dim);border-radius:3px;font-family:var(--font-mono);font-size:12px;line-height:1.7">
+      <div id="bitRecommendation" style="display:none;margin-top:10px;padding:10px;background:rgba(212,134,10,0.08);border:1px solid var(--amber-dim);border-radius:3px;font-family:var(--font-mono);font-size:14px;line-height:1.7">
         <div style="color:var(--amber);margin-bottom:4px;font-weight:600">⚙ Recommended Bit</div>
         <div id="bitRecText"></div>
       </div>
 
-      <div id="cncSettingsRec" style="display:none;margin-top:10px;padding:10px;background:rgba(39,174,96,0.07);border:1px solid rgba(39,174,96,0.3);border-radius:3px;font-family:var(--font-mono);font-size:12px;line-height:1.7">
+      <div id="cncSettingsRec" style="display:none;margin-top:10px;padding:10px;background:rgba(39,174,96,0.07);border:1px solid rgba(39,174,96,0.3);border-radius:3px;font-family:var(--font-mono);font-size:14px;line-height:1.7">
         <div style="color:var(--green);margin-bottom:4px;font-weight:600">✓ Recommended CNC Settings</div>
         <div id="cncRecText"></div>
-        <button onclick="applyCncRecommendation()" style="margin-top:8px;padding:5px 12px;background:var(--green);color:#0f0d0b;border:none;border-radius:3px;font-family:var(--font-mono);font-size:12px;cursor:pointer;font-weight:600">Apply These Settings</button>
+        <button onclick="applyCncRecommendation()" style="margin-top:8px;padding:5px 12px;background:var(--green);color:#0f0d0b;border:none;border-radius:3px;font-family:var(--font-mono);font-size:14px;cursor:pointer;font-weight:600">Apply These Settings</button>
       </div>
     </div>
 
@@ -646,7 +655,7 @@
       <div class="upload-zone" id="uploadZone">
         <input type="file" id="fileInput" accept="image/*">
         <div class="upload-icon">⬡</div>
-        <p><strong>Drop image here</strong><br>or click to browse<br><small style="font-size:12px;opacity:0.6">PNG · JPG · SVG · BMP</small></p>
+        <p><strong>Drop image here</strong><br>or click to browse<br><small style="font-size:14px;opacity:0.6">PNG · JPG · SVG · BMP</small></p>
       </div>
     </div>
 
@@ -686,7 +695,7 @@
           <button class="toggle-btn" onclick="setInvert(true)" id="inv-yes">RECESSED</button>
         </div>
         <!-- Effect explanation box -->
-        <div id="effectExplainer" style="margin-top:8px;padding:10px;background:var(--bg);border:1px solid var(--border);border-radius:3px;font-family:var(--font-mono);font-size:12px;line-height:1.6">
+        <div id="effectExplainer" style="margin-top:8px;padding:10px;background:var(--bg);border:1px solid var(--border);border-radius:3px;font-family:var(--font-mono);font-size:14px;line-height:1.6">
           <div id="effectRaisedMsg" style="color:var(--amber)">
             <strong style="color:var(--amber-bright)">RAISED (Traditional Stamp)</strong><br>
             The CNC carves away the background material, leaving your design standing proud above the surface. When pressed into leather, the design creates a <strong>pressed-in impression</strong> in the leather.
@@ -917,7 +926,7 @@
     <div class="panel-section" style="flex:1">
       <div class="section-label">G-Code Preview</div>
       <div class="gcode-display" id="gcodeDisplay">
-        <span style="color:var(--text-dim);font-size:11px;">// Generate G-code to preview...</span>
+        <span style="color:var(--text-dim);font-size:13px;">// Generate G-code to preview...</span>
       </div>
     </div>
 
@@ -938,14 +947,14 @@
           <option value="nomad">Nomad 3</option>
         </optgroup>
       </select>
-      <div style="font-family:var(--font-mono);font-size:10px;color:var(--text-dim);line-height:1.6;padding:8px;background:var(--bg);border:1px solid var(--border);border-radius:3px" id="presetInfo">
+      <div style="font-family:var(--font-mono);font-size:13px;color:var(--text-dim);line-height:1.6;padding:8px;background:var(--bg);border:1px solid var(--border);border-radius:3px" id="presetInfo">
         Select a machine preset to auto-configure feed rates and limits.
       </div>
     </div>
 
     <div class="panel-section">
       <div class="section-label">Notes</div>
-      <div style="font-family:var(--font-mono);font-size:12px;color:var(--text-dim);line-height:1.7;padding:8px;background:var(--bg);border:1px solid var(--border);border-radius:3px">
+      <div style="font-family:var(--font-mono);font-size:14px;color:var(--text-dim);line-height:1.7;padding:8px;background:var(--bg);border:1px solid var(--border);border-radius:3px">
         <div style="color:var(--amber);margin-bottom:4px">NestWorks C500 Tips</div>
         <div>• Work area: <strong style="color:var(--steel-bright)">230 × 213 × 100mm</strong> — keep stamps within this</div>
         <div>• Use <strong style="color:var(--amber)">Delrin or brass</strong> for best leather stamp results</div>
@@ -1030,6 +1039,7 @@ function loadFile(file) {
         document.getElementById('stampH').value = Math.round(parseFloat(document.getElementById('stampW').value) * ratio);
       }
       drawSourceCanvas(img);
+      setView('source');   // ← always show source immediately on load
       processImage();
       document.getElementById('generateBtn').disabled = false;
       log('Image loaded: ' + img.width + '×' + img.height, 'ok');
@@ -1041,7 +1051,7 @@ function loadFile(file) {
 
 function drawSourceCanvas(img) {
   const canvas = document.getElementById('sourceCanvas');
-  const maxSize = 600;
+  const maxSize = 500;
   let w = img.width, h = img.height;
   if (w > maxSize || h > maxSize) {
     if (w > h) { h = Math.round(h * maxSize / w); w = maxSize; }
@@ -1393,7 +1403,7 @@ function resetTool() {
   document.getElementById('generateBtn').disabled = true;
   document.getElementById('downloadBtn').disabled = true;
   document.getElementById('downloadSvgBtn').disabled = true;
-  document.getElementById('gcodeDisplay').innerHTML = '<span style="color:var(--text-dim);font-size:12px;">// Generate G-code to preview...</span>';
+  document.getElementById('gcodeDisplay').innerHTML = '<span style="color:var(--text-dim);font-size:14px;">// Generate G-code to preview...</span>';
   ['statTime','statLines','statPasses','statSize','statW','statH'].forEach(id => {
     document.getElementById(id).textContent = '—';
   });
